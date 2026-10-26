@@ -1,0 +1,1622 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How roles change (Part 2 of 2)</title>
+<meta name="author" content="Chris Colligan, Emily Lansdowne, Paul Veiga and Vinu Cherian">
+<meta name="description" content="Part 2 of 2: how roles change, what it looks like in IT service management, and how to manage the organization around redesigned roles.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230f62fe'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#ffffff;--surface:#f4f4f4;--surface2:#e8e8e8;
+  --ink:#161616;--ink2:#525252;--mut:#6f6f6f;
+  --line:#e0e0e0;--line2:#c6c6c6;
+  --agent:#0f62fe;--agent-soft:#d0e2ff;--agent-deep:#0043ce;
+  --people:#007d79;--people-soft:#d9fbfb;
+  --leak:#8a6800;--leak-fill:#f1c21b;--leak-soft:#fcf4d6;
+  --accent:#0f62fe;
+  --hero:#161616;--hero-ink:#ffffff;--hero-ink2:#c6c6c6;--hero-line:#393939;--hero-surface:#262626;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --paper:#161616;--surface:#262626;--surface2:#333333;
+  --ink:#f4f4f4;--ink2:#c6c6c6;--mut:#a8a8a8;
+  --line:#393939;--line2:#525252;
+  --agent:#78a9ff;--agent-soft:#001d6c;--agent-deep:#a6c8ff;
+  --people:#08bdba;--people-soft:#004144;
+  --leak:#f1c21b;--leak-fill:#f1c21b;--leak-soft:#483700;
+  --accent:#78a9ff;
+  --hero:#0b0b0b;--hero-surface:#1c1c1c;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--accent)}
+a:hover{text-decoration-thickness:2px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+
+.top{position:fixed;inset:0 0 auto 0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line)}
+.top-in{display:flex;align-items:center;gap:20px;height:48px;padding:0 32px}
+.brand{display:flex;align-items:center;gap:10px;font-size:14px;white-space:nowrap}
+.brand i{width:10px;height:10px;background:#0f62fe;display:inline-block}
+.brand b{font-weight:600}
+.brand span{color:var(--mut)}
+.toplinks{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.toplinks::-webkit-scrollbar{display:none}
+.toplinks a{font:400 12px/1 var(--mono);color:var(--ink2);text-decoration:none;padding:17px 8px 15px;white-space:nowrap;border-bottom:2px solid transparent}
+.toplinks a:hover{color:var(--ink)}
+.toplinks a.on{color:var(--ink);border-bottom-color:var(--accent)}
+.toplinks a em{font-style:normal;color:var(--mut);margin-right:5px}
+.theme{background:none;border:1px solid var(--line2);height:28px;padding:0 10px;font:400 12px/1 var(--mono);cursor:pointer;white-space:nowrap}
+.theme:hover{border-color:var(--ink)}
+.prog{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--accent)}
+
+
+.wrap{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:48px;max-width:1440px;margin:0 auto;padding:48px 32px 0}
+main{min-width:0}
+.rail{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 96px);overflow:auto;padding:4px 0 24px 20px;border-left:1px solid var(--line)}
+.rail h2{display:flex;justify-content:space-between;font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:16px 0 18px}
+.rail h2 b{color:var(--accent);font-weight:500;letter-spacing:0}
+.rail ol{list-style:none;margin:0;padding:0}
+.rail a{display:grid;grid-template-columns:26px 1fr;padding:7px 10px;font-size:13px;line-height:1.35;color:var(--ink2);text-decoration:none;border-left:2px solid transparent;margin-left:-21px}
+.rail a span{font:400 11px/1.6 var(--mono);color:var(--mut)}
+.rail a:hover{color:var(--ink)}
+.rail a.on{color:var(--accent);border-left-color:var(--accent);background:var(--surface);font-weight:500}
+.rail .up{display:block;margin-top:18px;font:400 12px/1 var(--mono);color:var(--accent);text-decoration:none}
+@media (max-width:1180px){.wrap{grid-template-columns:minmax(0,1fr)}.rail{display:none}}
+
+
+.hero{background:var(--hero);color:var(--hero-ink);margin:0 -32px;padding:88px 32px 80px}
+.hero-in{max-width:none}
+.hero{display:block}
+.kick{display:flex;align-items:center;gap:14px;font:500 12px/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#78a9ff;margin:0 0 28px}
+.kick::before{content:"";width:32px;height:1px;background:#78a9ff}
+.hero h1{font:300 clamp(46px,6.4vw,92px)/1.02 var(--sans);letter-spacing:-.025em;margin:0;max-width:15ch}
+.hero h1 em{display:block;font:300 italic clamp(24px,2.8vw,38px)/1.25 var(--serif);color:#a6c8ff;letter-spacing:0;margin-top:28px;max-width:32ch}
+.hero p{max-width:40em;font-size:18px;line-height:1.6;color:var(--hero-ink2);margin:0}
+.hero p.view{color:var(--hero-ink);border-left:2px solid #78a9ff;padding-left:20px;margin-top:32px}
+.hero p.view b{font-weight:600}
+
+
+section.s{padding:104px 0 0;scroll-margin-top:56px}
+.snum{font:500 20px/1.25 var(--sans);color:var(--accent);margin:0 0 22px;display:flex;gap:16px;align-items:center;letter-spacing:0}
+.snum b{font:400 18px/1 var(--mono);color:var(--paper);background:var(--accent);padding:8px 11px}
+h2.h{font:300 clamp(44px,6.2vw,84px)/1.03 var(--sans);letter-spacing:-.025em;margin:0 0 24px;max-width:20ch}
+h2.h em,h3.h em,.fig-t em{font-family:var(--serif);font-style:italic;font-weight:300;color:var(--accent)}
+h3.h{font:400 26px/1.25 var(--sans);margin:52px 0 18px;max-width:30ch}
+.prose{max-width:43rem}
+.prose p{margin:0 0 20px;color:var(--ink2)}
+.prose p.lead{font-size:22px;line-height:1.55;color:var(--ink2);margin-bottom:12px}
+.prose strong{color:var(--ink);font-weight:600}
+.prose ol.steps{list-style:none;counter-reset:st;padding:0;margin:28px 0}
+.prose ol.steps li{counter-increment:st;display:grid;grid-template-columns:44px 1fr;padding:14px 0;border-top:1px solid var(--line);color:var(--ink2)}
+.prose ol.steps li:last-child{border-bottom:1px solid var(--line)}
+.prose ol.steps li::before{content:counter(st);font:400 13px/1.7 var(--mono);color:var(--accent)}
+.prose ol.steps b{color:var(--ink);font-weight:600}
+.fn{font:400 11px/1 var(--mono);vertical-align:super;text-decoration:none;margin-left:2px}
+
+.choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);margin:36px 0 8px;max-width:1100px}
+.choices div{padding:18px 20px 22px 0}
+.choices div+div{padding-left:20px;border-left:1px solid var(--line)}
+.choices h4{font:500 20px/1.2 var(--sans);margin:0 0 8px}
+.choices p{margin:0;font-size:15px;color:var(--ink2)}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;max-width:1100px;margin:28px 0 8px;border-top:1px solid var(--line)}
+.trio div{padding:20px 24px 8px 0}
+.trio div+div{padding-left:24px;border-left:1px solid var(--line)}
+.trio.duo{grid-template-columns:repeat(2,minmax(0,1fr))}
+.trio h4{font:500 17px/1.3 var(--sans);margin:0 0 6px;display:flex;align-items:center;gap:10px}
+.trio p{margin:0;color:var(--ink2);font-size:15.5px}
+.glyph{width:12px;height:12px;flex:none;display:inline-block}
+.g-leak{background:var(--leak-fill)}
+.g-agent{background:var(--agent);border-radius:50%}
+.g-people{background:var(--people);border-radius:50%}
+.g-ink{background:var(--ink)}
+.g-hollow{border:1.5px solid var(--ink2);border-radius:50%}
+
+.pull{font:300 italic clamp(24px,2.6vw,32px)/1.35 var(--serif);color:var(--ink);max-width:28ch;margin:40px 0 24px;padding-left:24px;border-left:2px solid var(--people)}
+.statement{font:300 clamp(28px,3.2vw,40px)/1.25 var(--sans);max-width:26ch;margin:52px 0 16px;letter-spacing:-.01em}
+.statement em{font-family:var(--serif);font-style:italic;color:var(--accent)}
+.protect{max-width:none;margin:40px 0 0;padding:28px 32px;background:var(--surface);border-left:3px solid var(--people);display:grid;grid-template-columns:220px 1fr;gap:32px}
+.protect h3{font:400 24px/1.25 var(--sans);margin:0}
+.protect h3 em{display:block;font:300 italic 28px/1.25 var(--serif);color:var(--people);margin-top:6px}
+.protect p{margin:0;color:var(--ink2)}
+
+.levers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;max-width:1100px;margin:36px 0 0;border-top:1px solid var(--ink)}
+.levers div{padding:22px 28px 26px 0;border-bottom:1px solid var(--line)}
+.levers div:nth-child(even){padding-left:28px;padding-right:0;border-left:1px solid var(--line)}
+.levers h4{font:500 19px/1.3 var(--sans);margin:0 0 8px}
+.levers p{margin:0;color:var(--ink2);font-size:15.5px}
+
+.paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:43rem;margin:20px 0 28px}
+.paths div{border:1px solid var(--line2);padding:14px 16px}
+.paths b{display:block;font-weight:600;margin-bottom:2px}
+.paths span{font-size:14.5px;color:var(--ink2)}
+
+.roleduo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;max-width:1100px;margin:28px 0 0;border:1px solid var(--line)}
+.roleduo>div{padding:26px 28px}
+.roleduo>div+div{border-left:1px solid var(--line);background:color-mix(in srgb,var(--agent-soft) 35%,var(--paper))}
+.roleduo h4{font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:0 0 14px}
+.roleduo>div+div h4{color:var(--agent)}
+.roleduo p{margin:0;color:var(--ink2)}
+.roleduo ul{list-style:none;margin:0;padding:0}
+.roleduo li{padding:10px 0;border-top:1px solid var(--line);color:var(--ink2);font-size:15.5px}
+.roleduo li:first-child{border-top:0;padding-top:0}
+.roleduo li b{color:var(--ink);font-weight:600}
+
+
+.fig{margin:40px 0 20px;max-width:none;border:1px solid var(--line);background:var(--paper)}
+.fig-h{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding:24px 28px 0}
+.fig-l{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 12px;display:block}
+.fig-t{font:400 22px/1.3 var(--sans);margin:0;max-width:34ch}
+.fig-k{font:400 12.5px/1.55 var(--mono);color:var(--mut);margin:10px 0 0;max-width:80ch}
+.fig-ctl{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;flex:none}
+.seg{display:inline-flex;border:1px solid var(--line2)}
+.seg button{background:none;border:0;padding:6px 11px;font:400 12px/1.2 var(--mono);color:var(--ink2);cursor:pointer}
+.seg button+button{border-left:1px solid var(--line2)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.replay{background:none;border:1px solid var(--line2);padding:6px 11px;font:400 12px/1.2 var(--mono);color:var(--ink2);cursor:pointer}
+.replay::before{content:"\21BB";margin-right:6px}
+.replay:hover,.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]:hover{color:var(--paper)}
+.fig-b{padding:24px 28px 8px;position:relative}
+.fig-b:last-child{padding-bottom:30px}
+.fig-c{padding:16px 28px 22px;font-size:14px;line-height:1.55;color:var(--mut);border-top:1px solid var(--line);margin:16px 0 0}
+.fig-c b{color:var(--ink2);font-weight:500}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font:400 12px/1.4 var(--mono);color:var(--ink2);margin:14px 0 0}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+
+
+.fig.dark{background:var(--hero);border-color:var(--hero-line);color:var(--hero-ink);--ink:#f4f4f4;--ink2:#c6c6c6;--mut:#a8a8a8;--line:#393939;--line2:#525252;--accent:#78a9ff;--agent:#78a9ff;--people:#08bdba;--leak-fill:#f1c21b;--paper:#161616}
+.fig.dark .seg button[aria-pressed="true"]{background:#f4f4f4;color:#161616}
+.fig.dark .fig-t em{color:#a6c8ff}
+.fig.dark .fig-c{border-top-color:#393939}
+@media (max-width:1000px){.hero{grid-template-columns:1fr}}
+@media (max-width:760px){
+  .wrap{padding:40px 18px 0}.hero{margin:0 -18px;padding:72px 18px 56px}.top-in{padding:0 18px}
+  .fig-h{flex-direction:column;padding:20px 18px 0}.fig-ctl{justify-content:flex-start}.fig-b{padding:20px 18px 8px}.fig-c{padding:14px 18px 18px}
+  .choices,.trio,.trio.duo,.levers,.roleduo,.paths{grid-template-columns:1fr}
+  .choices div+div,.trio div+div,.levers div:nth-child(even),.roleduo>div+div{border-left:0;padding-left:0;border-top:1px solid var(--line)}
+  .roleduo>div{padding:20px 18px}.roleduo>div+div{padding-left:18px}
+  .protect{grid-template-columns:1fr;gap:12px;padding:22px 20px}
+  .brand span{display:none}
+}
+
+
+.fig-l{font:600 16px/1.3 var(--sans);letter-spacing:0;text-transform:none;color:var(--ink);margin:0 0 10px;display:flex;align-items:baseline;gap:10px}
+.fig-l .n{font:500 12px/1 var(--mono);color:var(--accent);letter-spacing:.06em}
+.fig-t{font:300 26px/1.25 var(--sans);margin:0;max-width:36ch}
+.guide{display:grid;gap:6px;margin:16px 0 0;max-width:86ch}
+.guide p{margin:0;display:grid;grid-template-columns:62px 1fr;gap:10px;font-size:14.5px;line-height:1.5;color:var(--ink2)}
+.guide p b{font:500 11px/1.9 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.guide p.do b{color:var(--accent)}
+.guide p.do{color:var(--ink)}
+.pp{background:none;border:1px solid var(--line2);padding:6px 11px;font:400 12px/1.2 var(--mono);color:var(--ink2);cursor:pointer;min-width:78px}
+.pp::before{content:"\275A\275A";font-size:9px;letter-spacing:-1px;margin-right:8px;vertical-align:1px}
+.pp[aria-pressed="true"]::before{content:"\25B6";font-size:10px;letter-spacing:0}
+.pp:hover{color:var(--ink);border-color:var(--ink)}
+.fig .fig-b{transition:opacity .6s ease}
+.fig.fading .fig-b{opacity:0}
+.noanim,.noanim *,.noanim *::before,.noanim *::after{transition:none!important;animation:none!important}
+.fig.dark .pp{border-color:#525252;color:#c6c6c6}
+.fig.dark .fig-l{color:#f4f4f4}
+.fig.dark .guide p.do{color:#f4f4f4}
+.fig.dark .guide p.do b{color:#78a9ff}
+.fig-c{font-size:13.5px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:1100px;margin:40px 0 20px}
+.pair .fig{margin:0}
+
+
+.hfig{margin:0;background:#1c1c1c}
+.hfig .fig-h{padding:20px 22px 0}.hfig .fig-b{padding:16px 22px 6px}.hfig .fig-c{padding:12px 22px 16px;font-size:12.5px}
+.hfig .fig-t{font-size:20px}
+.hfig .unit h4 b{font-size:44px}
+.hfig .unit h4 span{font-size:13.5px;color:#c6c6c6}
+.hfig .units{gap:24px}
+.hfig .ugrid{grid-template-columns:repeat(20,minmax(0,1fr));gap:2px}
+.hfig .ugrid i{background:#393939}
+.hfig.play .ugrid.mandate i.f{background:#f4f4f4}
+.hfig.play .ugrid.ready i.f{background:#78a9ff}
+.hfig .fig-c a{color:#78a9ff}
+.skl{font:600 15px/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin:26px 0 12px;padding-top:16px;border-top:1px dashed var(--line2)}
+
+
+.sim{position:relative;height:290px}
+.sim canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.sim-read{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--line);margin-top:8px}
+.sim-read div{padding:10px 20px 0 0}
+.sim-read div+div{padding-left:20px;border-left:1px solid var(--line)}
+.sim-read b{display:block;font:300 26px/1 var(--sans);font-variant-numeric:tabular-nums;color:var(--ink)}
+.sim-read span{display:block;font:400 12px/1.5 var(--mono);color:var(--mut);margin-top:6px}
+.sim-read svg{display:block;width:100%;height:26px;margin-top:2px}
+.sim-read .warn b{color:var(--leak-fill)}
+
+
+.metro svg{display:block;width:100%;height:auto;overflow:visible}
+.metro .trk{fill:none;stroke:var(--line2);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.metro .trk.b{stroke:var(--agent);stroke-opacity:.35}
+.metro .ret{fill:none;stroke:var(--agent);stroke-opacity:.35;stroke-width:3;stroke-dasharray:2 7;stroke-linecap:round}
+.metro .lane{font:600 15px var(--sans);fill:var(--ink)}
+.metro .lane2{font:400 12.5px var(--mono);fill:var(--mut)}
+.metro .st{cursor:pointer;outline:none}
+.metro .st circle{fill:var(--paper);stroke:var(--ink2);stroke-width:2.5;transition:r .6s,fill .6s,stroke .6s}
+.metro .st.om circle{stroke:var(--agent);stroke-width:4}
+.metro .st.leak circle{stroke:var(--leak-fill);stroke-dasharray:4 3}
+.metro .st.hit circle{fill:var(--agent-soft)}
+.metro .st.leak.hit circle{fill:var(--leak-soft)}
+.metro .st:hover circle,.metro .st:focus circle,.metro .st.sel circle{stroke:var(--ink);stroke-width:4}
+.metro .st text{font:600 15px var(--sans);fill:var(--ink)}
+.metro .st text.s{font:400 12.5px var(--sans);fill:var(--ink2)}
+.metro .st.om text{fill:var(--agent-deep)}
+.metro .st.leak text{fill:var(--leak)}
+.metro .tok{fill:var(--agent)}
+.metro .tok.a{fill:var(--ink2)}
+.metro .drip{fill:var(--leak-fill)}
+.metro .leakmsg{font:500 13px var(--mono);fill:var(--leak);transition:opacity .8s}
+.metro .retl{font:400 12.5px var(--mono);fill:var(--agent)}
+.mdet{margin:8px 0 0;padding:14px 18px;background:var(--surface);min-height:58px;font-size:15px;color:var(--ink2)}
+.mdet b{color:var(--ink)}
+
+
+.units{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
+.unit h4{display:flex;align-items:baseline;gap:14px;margin:0 0 12px;font-weight:400}
+.unit h4 b{font:300 52px/1 var(--sans);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.unit h4 span{font-size:15px;color:var(--ink2);max-width:26ch;line-height:1.4}
+.ugrid{display:grid;grid-template-columns:repeat(25,minmax(0,1fr));gap:3px;max-width:440px}
+.ugrid i{aspect-ratio:1;background:var(--surface2);transition:background-color .35s calc(var(--i)*22ms)}
+.play .ugrid.mandate i.f{background:var(--ink)}
+.play .ugrid.ready i.f{background:var(--agent)}
+
+
+.ba{position:relative;display:grid;grid-template-columns:auto 150px minmax(0,1fr);gap:24px;align-items:start}
+.ba h5{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:0 0 14px}
+.ba .bslot{position:relative;width:218px;height:108px}
+.ba .bnote{font-size:13.5px;color:var(--ink2);margin:12px 0 0;max-width:218px;min-height:2.8em}
+.ba .bnote b{color:var(--agent)}
+.ba .mid{align-self:center;text-align:center;font-size:13.5px;color:var(--ink2);padding-top:30px}
+.ba .mid i{display:block;height:2px;background:var(--line2);margin:10px 0;position:relative}
+.ba .mid i::after{content:"";position:absolute;right:-2px;top:-5px;border:6px solid transparent;border-left:9px solid var(--line2);border-right:0}
+.grp{display:grid;grid-template-columns:minmax(0,1fr) 40px;gap:0 14px;padding:6px 0;border-top:1px solid var(--line);transition:opacity .6s}
+.grp .gl{font-size:14px;line-height:1.35;color:var(--ink2)}
+.grp .gl em{font-style:normal;font-weight:600;color:var(--ink)}
+.grp .gn{font:300 22px/1 var(--sans);text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+.grp .gs{grid-column:1/-1;position:relative;height:18px;margin-top:4px}
+.grp.off{display:none}
+.grp.absorbed{border-top-color:var(--leak-fill)}
+.grp.absorbed .gl em{color:var(--leak)}
+.bdots{position:absolute;inset:0;pointer-events:none}
+.cd{position:absolute;left:0;top:0;width:16px;height:16px;border-radius:50%;background:var(--ink2);transition:transform 1.6s var(--ease) var(--d,0s),background-color .8s var(--d,0s),box-shadow .8s var(--d,0s),opacity .6s}
+.cd.sm{width:14px;height:14px}
+.cd.freed{background:var(--agent)}
+.cd.reserve{background:var(--ink)}
+.cd.moved{background:var(--people)}
+.cd.exit{background:transparent;box-shadow:inset 0 0 0 1.6px var(--ink2)}
+.cd.absorb{background:var(--leak-fill)}
+.cd.ghost{opacity:.18}
+.cd.hide{opacity:0}
+
+
+.meth{display:grid;grid-template-columns:minmax(0,1.15fr) 56px minmax(0,1fr);row-gap:24px;position:relative;align-items:start}
+.mn,.md,.mprot{position:relative;text-align:left;border:1px solid var(--line2);background:var(--paper);padding:13px 16px;cursor:pointer;transition:border-color .5s,background-color .5s,box-shadow .5s}
+.mn b,.md b,.mprot b{display:block;font-weight:600;font-size:15.5px}
+.mn>span,.md>span,.mprot>span{display:block;font-size:13.5px;color:var(--ink2)}
+.meth .more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .8s var(--ease),opacity .8s;opacity:0;font-size:14.5px;color:var(--ink)}
+.more>span{min-height:0;overflow:hidden;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.meth .on .more{grid-template-rows:1fr;opacity:1}
+.on .more>span{padding-top:8px}
+.mn{grid-column:1}
+.md{grid-column:3;align-self:center;background:var(--surface)}
+.md.key{border:2px solid var(--agent);padding:12px 15px;background:color-mix(in srgb,var(--agent-soft) 40%,var(--paper))}
+.mn.on,.md.on,.mprot.on{border-color:var(--ink);box-shadow:inset 4px 0 0 var(--agent)}
+.mprot.on{box-shadow:inset 4px 0 0 var(--people)}
+.mn:not(.end)::after{content:"";position:absolute;left:28px;top:100%;width:1.5px;height:24px;background:var(--line2)}
+.mh{grid-column:2;align-self:center;height:1.5px;background:var(--line2);position:relative}
+.mh::after{content:"";position:absolute;right:-1px;top:-3.5px;border:4px solid transparent;border-left:6px solid var(--line2);border-right:0}
+.mh.on{background:var(--agent)}
+.mh.on::after{border-left-color:var(--agent)}
+.mrep{grid-column:1;font:400 12px/1 var(--mono);color:var(--mut);margin-top:-12px;padding-left:16px}
+.mprot{grid-column:1/-1;border-color:var(--people);background:color-mix(in srgb,var(--people-soft) 50%,var(--paper))}
+.mprog{display:flex;gap:4px;margin:18px 0 0}
+.mprog i{flex:1;height:3px;background:var(--line)}
+.mprog i.on{background:var(--agent)}
+
+
+.mx{display:grid;grid-template-columns:172px repeat(4,minmax(0,1fr));column-gap:22px}
+.mx-h{padding:0 0 10px}
+.mx-h b{display:block;font:500 20px/1.2 var(--sans);color:var(--ink);padding-top:11px;border-top:3px solid var(--ink2)}
+.mx-h.retire b{border-top-color:var(--line2)}
+.mx-h.reshape b{border-top-color:var(--agent)}
+.mx-h.reinforce b{border-top-color:var(--people)}
+.mx-h.build b{border-top-color:var(--ink)}
+.mx-h span{display:block;font-size:13px;line-height:1.45;color:var(--ink2);margin-top:5px}
+.mx-r{font:600 15.5px/1.3 var(--sans);color:var(--ink);padding:17px 14px 19px 0;border-top:1px solid var(--line)}
+.mx-c{padding:17px 0 19px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:11px}
+.mx-c i{display:block;font-style:normal;font-size:13.5px;line-height:1.4;color:var(--ink2);padding-left:11px;border-left:2px solid var(--line2)}
+.mx-c.m-retire i{color:var(--mut);text-decoration:line-through;text-decoration-color:var(--line2)}
+.mx-c.m-reshape i{border-left-color:var(--agent);color:var(--ink)}
+.mx-c.m-reinforce i{border-left-color:var(--people);color:var(--ink)}
+.mx-c.m-build i{border-left-color:var(--ink);color:var(--ink);font-weight:500}
+.mx-c::before{display:none;content:attr(data-move);font:500 10.5px/1.4 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--mut);margin-bottom:-4px}
+.mxnote{display:flex;gap:10px;align-items:baseline;margin:20px 0 0;padding-top:14px;border-top:1px dashed var(--line2);font-size:14.5px;color:var(--ink2)}
+.mxnote b{color:var(--ink);font-weight:600;white-space:nowrap}
+
+
+.skills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
+.skills h4{font:500 19px/1.2 var(--sans);margin:0 0 4px}
+.skills p{margin:0 0 12px;font-size:14px;color:var(--ink2)}
+.sk{display:flex;flex-wrap:wrap;gap:8px}
+.sk span{padding:7px 11px;font-size:14px;border:1px solid var(--line2)}
+.amp span{border-color:var(--people);box-shadow:inset 0 -3px 0 var(--people)}
+.add span{border-color:var(--agent)}
+.add span::before{content:"+ ";color:var(--agent);font-weight:600}
+
+
+.vs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.vst{position:relative;background:var(--surface);padding:16px 30px 16px 34px;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%,18px 50%);z-index:0;isolation:isolate}
+.vst:first-child{clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%);padding-left:20px}
+.vst b{display:block;font:500 18px/1.2 var(--sans)}
+.vst span{display:block;font-size:13.5px;color:var(--ink2);margin-top:4px}
+.vst::before{content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--agent-soft) 70%,var(--paper));transform:scaleX(0);transform-origin:left;transition:transform 1s var(--ease) calc(var(--i)*1s);z-index:-1}
+.vst i{position:absolute;right:30px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--agent);transform:scale(0);transition:transform .6s cubic-bezier(.2,1.7,.4,1) calc(var(--i)*1s + .8s)}
+.play .vst::before{transform:scaleX(1)}
+.play .vst i{transform:scale(1)}
+
+
+.itsm{display:grid;grid-template-columns:170px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,.8fr);row-gap:10px;align-items:stretch}
+.itsm .hd{font:400 12px/1 var(--mono);color:var(--mut);padding-bottom:4px;align-self:end}
+.itsm .rl{font-weight:600;font-size:15.5px;align-self:center;padding-right:12px}
+.ic{border:1px solid var(--line2);padding:10px 13px;font-size:14px;line-height:1.4;color:var(--ink2);clip-path:inset(0 100% 0 0);transition:clip-path 1s var(--ease) var(--d)}
+.ic b{display:block;color:var(--ink);font-weight:500}
+.ic.aug{border:2px solid var(--agent);background:color-mix(in srgb,var(--agent-soft) 45%,var(--paper));color:var(--ink)}
+.ic.imp{border-color:var(--people);background:color-mix(in srgb,var(--people-soft) 55%,var(--paper));color:var(--ink)}
+.ia{align-self:center;height:1.5px;background:var(--line2);margin:0 6px;position:relative;transform-origin:left;transform:scaleX(0);transition:transform .6s var(--d)}
+.ia::after{content:"";position:absolute;right:-1px;top:-3.5px;border:4px solid transparent;border-left:6px solid var(--line2);border-right:0}
+.play .ic{clip-path:inset(0 0 0 0)}
+.play .ia{transform:scaleX(1)}
+
+.samerow{display:grid;grid-template-columns:auto 52px minmax(0,1fr);align-items:start;margin-top:24px;padding-top:18px;border-top:1px dashed var(--line2)}
+.samerow em{display:block;font:500 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;font-style:normal;color:var(--mut);margin-bottom:8px}
+.sr-same b{display:inline-block;font:600 16px/1.2 var(--sans);color:var(--mut);border:1px dashed var(--line2);padding:10px 15px}
+.sr-arrow{position:relative;height:1.5px;background:var(--line2);margin:42px 12px 0}
+.sr-arrow::after{content:"";position:absolute;right:-1px;top:-4.5px;border:5px solid transparent;border-left:7px solid var(--line2);border-right:0}
+.sr-tags{display:flex;flex-wrap:wrap;gap:8px}
+.sr-tags span{border:1.5px solid var(--line2);padding:10px 14px;font-size:14.5px;color:var(--ink2);transition:border-color .8s var(--d),background-color .8s var(--d),color .8s var(--d)}
+.play .sr-tags span{border-color:var(--agent);background:color-mix(in srgb,var(--agent-soft) 45%,var(--paper));color:var(--ink)}
+@media (max-width:900px){.samerow{grid-template-columns:1fr}.sr-arrow{display:none}.sr-ch{margin-top:18px}}
+
+
+.dr-stop{border:1.5px solid var(--people);padding:10px 14px;font-size:14px;margin-bottom:14px;clip-path:inset(0 100% 0 0);transition:clip-path 1.8s var(--ease) 2s;background:color-mix(in srgb,var(--people-soft) 45%,var(--paper))}
+.dr-stop b{font-weight:600}
+.dr-track{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px}
+.dr-z{padding:14px 14px 16px;clip-path:inset(0 100% 0 0);transition:clip-path 1.2s var(--ease) var(--d)}
+.dr-z.a{background:color-mix(in srgb,var(--agent-soft) 70%,var(--paper))}
+.dr-z.p{background:var(--surface2)}
+.dr-z h5{font:500 15px/1.3 var(--sans);margin:0 0 4px}
+.dr-z p{margin:0;font-size:13.5px;color:var(--ink2)}
+.dr-axis{display:flex;justify-content:space-between;font:400 12px/1 var(--mono);color:var(--mut);margin-top:10px}
+.dr-axis span:last-child::after{content:"  \2192"}
+.play .dr-stop,.play .dr-z{clip-path:inset(0 0 0 0)}
+.meas h5{font:400 12px/1 var(--mono);color:var(--mut);margin:0 0 10px}
+.mo,.mnw{display:flex;flex-wrap:wrap;gap:8px}
+.mo{margin-bottom:22px}
+.mo span{padding:8px 12px;border:1px solid var(--line2);font-size:15px;position:relative;transition:color .8s 1.2s}
+.mo span::after{content:"";position:absolute;left:8px;right:8px;top:50%;height:1.5px;background:var(--ink2);transform:scaleX(0);transform-origin:left;transition:transform .8s calc(var(--i)*.5s + .6s)}
+.play .mo span{color:var(--mut)}
+.play .mo span::after{transform:scaleX(1)}
+.mnw span{padding:8px 12px;border:1.5px solid var(--people);font-size:15px;font-weight:500;opacity:0;transform:translateY(8px);transition:opacity .8s calc(var(--i)*.5s + 2s),transform .8s var(--ease) calc(var(--i)*.5s + 2s)}
+.play .mnw span{opacity:1;transform:none}
+
+
+.cyc{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:32px;align-items:center}
+.cyc svg{width:100%;height:auto;display:block;max-width:400px}
+.cyc .ring{fill:none;stroke:var(--line2);stroke-width:1.5;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 3s var(--ease)}
+.play.cycfig .ring{stroke-dashoffset:0}
+.cyc .nd rect{fill:var(--paper);stroke:var(--line2);stroke-width:1;transition:stroke .5s,fill .5s}
+.cyc .nd.om rect{stroke:var(--agent);stroke-width:2;fill:color-mix(in srgb,var(--agent-soft) 45%,var(--paper))}
+.cyc .nd.hit rect{stroke:var(--ink);stroke-width:2}
+.cyc .nd text{font:600 14px var(--sans);fill:var(--ink);text-anchor:middle}
+.cyc .nd text.s{font:400 12px var(--sans);fill:var(--ink2)}
+.cyc .nd{opacity:0;transition:opacity .8s calc(var(--i)*.6s + .3s)}
+.play.cycfig .nd{opacity:1}
+.cyc .runner{fill:var(--agent)}
+.cyc .input text{font:400 12px var(--mono);fill:var(--leak)}
+.cyc .input path{stroke:var(--leak-fill);stroke-width:1.5;fill:none}
+.cyc .input{opacity:0;transition:opacity 1s 3.4s}
+.play.cycfig .input{opacity:1}
+.cyc .ctr{font:300 italic 20px var(--serif);fill:var(--ink2);text-anchor:middle}
+.cyc ol{margin:0;padding:0;list-style:none;counter-reset:c}
+.cyc li{counter-increment:c;display:grid;grid-template-columns:30px 1fr;padding:10px 0;border-top:1px solid var(--line);font-size:15px;color:var(--ink2)}
+.cyc li::before{content:counter(c);font:400 12px/1.8 var(--mono);color:var(--accent)}
+.cyc li b{color:var(--ink);font-weight:600}
+
+
+.close{background:var(--hero);color:var(--hero-ink);margin:72px -32px 0;padding:56px 32px 52px}
+.close-in{max-width:1100px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;align-items:center}
+.close h2{font:300 clamp(36px,4.2vw,54px)/1.06 var(--sans);margin:0 0 24px;letter-spacing:-.02em}
+.close h2 em{display:block;font-family:var(--serif);font-style:italic;color:#a6c8ff;font-weight:300}
+.close p{color:#c6c6c6;margin:0 0 16px;max-width:38em}
+.close p.last{color:#fff}
+.venn svg{width:100%;height:auto;display:block}
+.venn .c1,.venn .c2{transition:transform 2.4s var(--ease)}
+.venn .c1{transform:translateX(-70px)}
+.venn .c2{transform:translateX(70px)}
+.venn.play .c1,.venn.play .c2{transform:none}
+.venn .ov{opacity:0;transition:opacity 1s 2.2s}
+.venn.play .ov{opacity:1}
+.venn .frm{opacity:0;transition:opacity 1s 3s}
+.venn.play .frm{opacity:1}
+.venn text{font-family:var(--sans)}
+.venn .pp{margin-top:8px;border-color:#525252;color:#c6c6c6}
+.venn svg{transition:opacity .6s}
+.venn.fading svg{opacity:0}
+
+
+.sources{max-width:none;padding:40px 0 16px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px}
+.sources h2{font:400 22px/1.3 var(--sans);margin:0 0 14px}
+.sources ol{margin:0;padding-left:22px;color:var(--ink2);font-size:14.5px}
+.sources li{margin-bottom:8px}
+.foot{grid-column:1/-1;border-top:1px solid var(--line);margin:16px 0 0;padding:16px 0 32px;font:400 12px/1.6 var(--mono);color:var(--mut)}
+
+@media (max-width:900px){
+  .sources{grid-template-columns:1fr;gap:8px}
+  .pair,.units,.skills,.cyc,.close-in{grid-template-columns:1fr}
+  .ba{grid-template-columns:1fr}.ba .mid{padding-top:0;text-align:left}.ba .mid i{max-width:160px}
+  .mx{display:block}
+  .mx-h{display:none}
+  .mx-r{border-top:2px solid var(--ink);padding:20px 0 4px}
+  .mx-c{border-top:0;padding:6px 0 0;gap:6px}
+  .mx-c:empty{display:none}
+  .mx-c::before{display:block}
+  .mxnote{display:block}
+  .mxnote b{display:block;margin-bottom:3px}
+  .itsm{grid-template-columns:1fr;row-gap:6px}.itsm .hd,.itsm .ia{display:none}.itsm .rl{margin-top:14px;padding:0}
+  .vs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .meth{grid-template-columns:1fr;row-gap:12px}.mn,.md,.mprot,.mrep{grid-column:1!important;grid-row:auto!important}.mh{display:none}.mn::after{display:none}.md{margin-left:18px}
+  .sim{height:300px}.sim-read{grid-template-columns:1fr}.sim-read div+div{border-left:0;padding-left:0;border-top:1px solid var(--line)}
+  .close{margin:64px -18px 0;padding:64px 18px}
+  .guide p{grid-template-columns:1fr;gap:0}
+}
+@media (max-width:560px){
+  .dr-track{grid-template-columns:1fr}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:0s!important;transition-delay:0s!important;animation:none!important}
+  html{scroll-behavior:auto}
+  .pp{display:none}
+  
+  .amp span{transform:scale(1)!important}
+  .add span{opacity:1!important;transform:none!important;border-style:solid!important}
+}
+
+
+.intro{padding-top:88px}
+.view{max-width:52rem;margin:28px 0 8px;padding:22px 26px;border-left:4px solid var(--accent);background:color-mix(in srgb,var(--agent-soft) 35%,var(--paper))}
+.view b{display:block;font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.view p{margin:0;font:300 clamp(22px,2.2vw,28px)/1.4 var(--sans);color:var(--ink)}
+.ctx{max-width:46rem;font-size:19px;line-height:1.55;color:var(--ink);margin:56px 0 0;padding-left:18px;border-left:2px solid var(--line2)}
+.ctx+.fig{margin-top:20px}
+.fig-l .badge{margin-left:6px;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:var(--paper);padding:5px 8px}
+
+
+.sims{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.simp{border:1px solid #393939;padding:14px 16px 6px;background:#1a1a1a}
+.simp h4{display:flex;align-items:center;gap:10px;font:500 17px/1.2 var(--sans);margin:0 0 6px;color:#f4f4f4}
+.simp[data-mode="bolt"]{border-top:3px solid #f1c21b}
+.simp[data-mode="redesign"]{border-top:3px solid #08bdba}
+.simp .sim{height:250px}
+.simp .sim-read{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+
+.cbs{display:grid;gap:6px}
+.cb{display:grid;grid-template-columns:150px minmax(0,1fr) 190px;gap:6px 20px;align-items:center;padding:12px 0}
+.cb-l b{display:block;font:600 17px/1.2 var(--sans)}
+.cb-l span{display:block;font:400 12px/1.5 var(--mono);color:var(--mut)}
+.cb-bar{display:flex;gap:2px;height:38px}
+.cb-bar i{flex:1;background:var(--surface2);transition:background-color .5s var(--d,0s),box-shadow .5s var(--d,0s)}
+.cb-bar i.desk{background:var(--ink2)}
+.cb-bar i.freed{background:var(--agent)}
+.cb-bar i.reserve{background:var(--ink)}
+.cb-bar i.moved{background:var(--people)}
+.cb-bar i.exit{background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--ink2)}
+.cb-bar i.absorb{background:var(--leak-fill)}
+.cb-o{opacity:0;transition:opacity .8s}
+.cb-o b{display:block;font:300 40px/1 var(--sans);font-variant-numeric:tabular-nums}
+.cb-o span{display:block;font-size:13.5px;line-height:1.35;color:var(--ink2);margin-top:4px}
+.cb-o.good b{color:var(--people)}
+.cb-o.bad b{color:var(--leak)}
+.cb-segs{grid-column:2;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:13.5px;line-height:1.35;color:var(--ink2);opacity:0;transition:opacity .8s}
+.cb-segs span{display:inline-flex;align-items:center;gap:7px}
+.cb-segs span::before{content:"";width:11px;height:11px;flex:none;background:var(--ink2)}
+.cb-segs .s-freed{color:var(--agent);font-weight:500}.cb-segs .s-freed::before{background:var(--agent)}
+.cb-segs .s-res::before{background:var(--ink)}
+.cb-segs .s-moved{color:var(--people);font-weight:500}.cb-segs .s-moved::before{background:var(--people)}
+.cb-segs .s-exit::before{background:transparent;box-shadow:inset 0 0 0 1.5px var(--ink2)}
+.cb-segs .s-abs{color:var(--leak);font-weight:500}.cb-segs .s-abs::before{background:var(--leak-fill)}
+.cb.show .cb-o,.cb.show .cb-segs{opacity:1}
+.cb-div{display:flex;align-items:center;gap:14px;font-size:14.5px;color:var(--ink);padding:10px 0 10px 170px;opacity:0;transition:opacity .8s}
+.cb-div i{width:0;height:0;border:7px solid transparent;border-top:10px solid var(--agent);border-bottom:0;flex:none}
+.cb-div.show{opacity:1}
+
+
+.hm{position:relative}
+.hm-ret{position:relative;height:30px;margin:0 9% 8px 9%;border:1.5px dashed var(--line2);border-bottom:0;border-radius:10px 10px 0 0}
+.hm-ret span{position:absolute;left:50%;top:-10px;transform:translateX(-50%);background:var(--paper);padding:0 10px;font:400 12px/1.4 var(--mono);color:var(--mut);white-space:nowrap}
+.hm-ret::after{content:"";position:absolute;left:-6px;bottom:-2px;border:6px solid transparent;border-top:9px solid var(--line2);border-bottom:0}
+.hm-cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-items:start}
+.hc{display:flex;flex-direction:column;gap:10px;background:none;border:0;padding:0;text-align:left;cursor:pointer}
+.hs{position:relative;display:block;background:var(--surface);padding:14px 26px 14px 26px;min-height:112px;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,0 100%,16px 50%);transition:background-color .6s,color .6s}
+.hc:first-child .hs{clip-path:polygon(0 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,0 100%);padding-left:16px}
+.hs em{display:block;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;font-style:normal;color:var(--mut);margin-bottom:6px}
+.hs b{display:block;font:600 16px/1.2 var(--sans);color:var(--ink)}
+.hs span{display:block;font-size:13px;color:var(--ink2);margin-top:3px}
+.hstep{display:block;font-size:14px;line-height:1.5;color:var(--mut);padding:0 6px 0 4px;min-height:4.5em;transition:color .6s}
+.hdec{position:relative;display:block;margin-top:14px;border:1px solid var(--line2);background:var(--paper);padding:12px 13px;font-size:13.5px;line-height:1.45;color:var(--ink2);transition:border-color .6s,box-shadow .6s,background-color .6s}
+.hdec::before{content:"";position:absolute;left:22px;top:-15px;width:1.5px;height:14px;background:var(--line2)}
+.hdec b{display:block;font:600 15.5px/1.25 var(--sans);color:var(--ink);margin-bottom:3px}
+.hdec em{display:block;font:500 10.5px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;font-style:normal;color:var(--mut);margin-bottom:5px}
+.hc.on .hdec em{color:var(--agent)}
+.hc.on .hs{background:var(--agent)}
+.hc.on .hs b,.hc.on .hs span,.hc.on .hs em{color:#fff}
+.hc.on .hstep{color:var(--ink)}
+.hc.on .hdec{border-color:var(--ink);box-shadow:inset 4px 0 0 var(--agent);color:var(--ink)}
+.hprot{display:block;width:100%;text-align:left;margin-top:18px;border:1px solid var(--people);background:color-mix(in srgb,var(--people-soft) 45%,var(--paper));padding:14px 18px;cursor:pointer;font-size:14.5px;color:var(--ink2);transition:box-shadow .6s,color .6s}
+.hprot b{font:600 16px/1.3 var(--sans);color:var(--ink);margin-right:10px}
+.hprot.on{box-shadow:inset 6px 0 0 var(--people);color:var(--ink)}
+.hm .mprog{display:flex;gap:4px;margin:16px 0 0}
+.hm .mprog i{flex:1;height:3px;background:var(--line)}
+.hm .mprog i.on{background:var(--agent)}
+
+
+.fig.feature{max-width:none;border:2px solid var(--ink);position:relative;margin-top:24px}
+.fig.feature::before{content:"";position:absolute;left:-2px;right:-2px;top:-2px;height:6px;background:var(--accent)}
+.fig.feature .fig-h{padding-top:34px}
+.fig.feature .fig-t{font-size:clamp(28px,2.8vw,36px)}
+.fig.feature .fig-b{padding-left:32px;padding-right:32px}
+#fig-sort .mx-h b{font-size:22px}
+#fig-sort .mx-c i{font-size:14.5px}
+#fig-sort .mx-r{font-size:16.5px}
+#fig-sort .skills h4{font-size:24px}
+#fig-sort .sk span{font-size:15px;padding:9px 13px}
+#fig-itsm .ic{font-size:15px;padding:12px 14px}
+#fig-itsm .itsm .rl{font-size:17px}
+#fig-itsm .vst b{font-size:20px}
+#fig-itsm .itsm{grid-template-columns:190px minmax(0,1fr) 34px minmax(0,1fr) 34px minmax(0,.85fr)}
+
+
+.fig.big{max-width:none}
+.fig.big .cyc{grid-template-columns:minmax(0,2.3fr) minmax(0,1fr);gap:32px}
+.fig.big .cyc .nd text{font-size:16px}.fig.big .cyc .nd text.s{font-size:13px}.fig.big .cyc .ctr{font-size:22px}
+.fig.big .cyc .runner{r:9px}
+.fig.big .cyc svg{max-width:860px}
+.fig.big .cyc li{font-size:16.5px;padding:14px 0}
+
+
+.skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--accent);color:#fff;padding:10px 16px;font:500 13px/1 var(--sans);text-decoration:none}
+.skip:focus{left:8px;top:8px}
+.hero .stand{max-width:34em;font:300 clamp(19px,1.8vw,23px)/1.5 var(--sans);color:var(--hero-ink2);margin:36px 0 0;padding-left:20px;border-left:2px solid #78a9ff}
+.hero .stand::first-line{color:inherit}
+.prose ol.steps li>span{display:block}
+.prose .pull{margin-top:32px}
+.trio{margin-top:32px}
+.levers+.ctx{margin-top:48px}
+h3.h+.roleduo{margin-top:20px}
+
+
+@media print{
+  @page{margin:14mm}
+  html,:root{--paper:#fff!important;--ink:#161616!important;--ink2:#3d3d3d!important;--mut:#5a5a5a!important;--line:#d4d4d4!important;--line2:#b0b0b0!important;color-scheme:light}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body{font-size:11pt;background:#fff}
+  .top,.rail,.fig-ctl,.pp,.seg,.replay,.theme,.prog,.skip,.rail .up{display:none!important}
+  .wrap{grid-template-columns:1fr;gap:0;padding:0;max-width:none}
+  .hero{margin:0;padding:24mm 0 16mm}
+  .close{margin:16mm 0 0;padding:14mm 10mm}
+  section.s{padding-top:14mm;break-inside:auto}
+  h2.h{font-size:26pt;break-after:avoid}
+  h3.h,.snum,.fig-l,.fig-t{break-after:avoid}
+  .fig,.trio,.choices,.levers,.roleduo,.paths{break-inside:avoid}
+  .mx-r,.mx-c{break-inside:avoid}
+  .fig{box-shadow:none}
+  
+  .ic,.dr-stop,.dr-z{clip-path:none!important}
+  .ia{transform:scaleX(1)!important}
+  .vst::before{transform:scaleX(1)!important}.vst i{transform:scale(1)!important}
+  .cb-o,.cb-segs,.cb-div,.cyc .nd,.cyc .input,.mnw span,.sk .add span{opacity:1!important}
+  .mnw span,.sk .add span{transform:none!important}
+  .sk .amp span{transform:scale(1)!important}
+  .cyc .ring{stroke-dashoffset:0!important}
+  .venn .c1,.venn .c2{transform:none!important}.venn .ov{opacity:1!important}.venn .frm{opacity:1!important}
+  .ugrid.mandate i.f{background:#161616!important}.ugrid.ready i.f{background:#0f62fe!important}
+  .mo span::after{transform:scaleX(1)!important}
+  .sr-tags span{border-color:#0f62fe!important}
+  .fig-c,.guide{color:#3d3d3d}
+  .mdet,.hm-ret{display:none!important}
+  .guide p.do{display:none}
+}
+
+@media (max-width:1000px){
+  .sims{grid-template-columns:1fr}
+  .cb{grid-template-columns:1fr;gap:8px}.cb-segs{grid-column:1}
+  .cb-div{padding-left:0}
+  .hm-cols{grid-template-columns:1fr;gap:14px}.hm-ret{display:none}
+  .hs{clip-path:none!important;padding:12px 14px!important;min-height:0}.hstep{min-height:0}
+  .fig.big .cyc{grid-template-columns:1fr}
+  .fig.feature .fig-b{padding-left:18px;padding-right:18px}
+}
+@media (max-width:900px){#fig-itsm .itsm{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.cb-o,.cb-segs,.cb-div{opacity:1}}
+
+
+
+.choices{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cost-note{max-width:1100px;margin:24px 0 0;padding:16px 20px;background:var(--surface);border-left:3px solid var(--line2);font-size:15.5px;line-height:1.55;color:var(--ink2)}
+.cost-note b{color:var(--ink);font-weight:600}
+
+
+.simp .setup{margin:0 0 10px;font:400 12.5px/1.45 var(--mono)}
+.simp[data-mode="bolt"] .setup{color:#f1c21b}
+.simp[data-mode="redesign"] .setup{color:#08bdba}
+.simp .sim{height:290px}
+.simp .sim-read{grid-template-columns:repeat(2,minmax(0,1fr))}
+.simp .sim-read div{padding:10px 12px 0 0}
+.simp .sim-read div+div{padding-left:12px}
+.simp .sim-read b{font-size:21px}
+.simp .sim-read span{font:400 11px/1.45 var(--mono)}
+
+
+.henter{display:block;width:100%;text-align:left;margin:0 0 20px;border:1px solid var(--agent);background:color-mix(in srgb,var(--agent-soft) 40%,var(--paper));padding:14px 18px;cursor:pointer;font:inherit;font-size:14.5px;color:var(--ink2);transition:box-shadow .6s,color .6s}
+.henter b{display:block;font:600 16px/1.3 var(--sans);color:var(--ink);margin-bottom:4px}
+.henter.on{box-shadow:inset 6px 0 0 var(--agent);color:var(--ink)}
+
+
+.lg{display:grid;grid-template-columns:176px repeat(3,minmax(0,1fr));column-gap:22px}
+.lg-h{padding:0 0 12px}
+.lg-h b{display:block;font:500 20px/1.2 var(--sans);color:var(--ink);padding-top:11px;border-top:3px solid var(--leak-fill)}
+.lg-h.c2 b{border-top-color:var(--agent)}
+.lg-h.c3 b{border-top-color:var(--people)}
+.lg-h span{display:block;font:400 12.5px/1.45 var(--mono);color:var(--mut);margin-top:5px}
+.lg-r{font:600 15px/1.35 var(--sans);color:var(--ink);padding:17px 14px 19px 0;border-top:1px solid var(--line)}
+.lg-c{padding:17px 0 19px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:9px}
+.lg-c i{display:block;font-style:normal;font-size:14px;line-height:1.45;color:var(--ink2);padding-left:11px;border-left:2px solid var(--line2)}
+.lg-c i em{font-style:normal;font:500 10.5px/1 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--people);margin-left:7px}
+.lg-c q{display:block;font-size:14px;line-height:1.5;color:var(--ink);font-style:italic}
+.lg-c .lvl{font:500 11px/1.3 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--mut)}
+.lg-c.f1 .lvl{color:var(--leak)}
+.lg-c.f2 .lvl{color:var(--agent)}
+.lg-c.f3 .lvl{color:var(--people)}
+.lg-c i.none{color:var(--leak);border-left-color:var(--leak-fill)}
+.lg-c i.ok{color:var(--ink);border-left-color:var(--people)}
+.lg-n b{display:block;font:300 40px/1 var(--sans);font-variant-numeric:tabular-nums;color:var(--ink)}
+.lg-n.flat b{color:var(--leak)}
+.lg-n.down b{color:var(--people)}
+.lg-n span{display:block;font:400 12px/1.4 var(--mono);color:var(--mut);margin-top:5px}
+
+
+
+.wrap{max-width:1680px;gap:56px}
+body{font-size:18px;line-height:1.62}
+.prose{max-width:none}
+.prose::after{content:"";display:table;clear:both}
+.prose > p,.prose > ol.steps{max-width:52rem}
+.prose > h3.h{max-width:30ch}
+.ctx{max-width:52rem}
+.view{max-width:52rem}
+.paths{max-width:52rem}
+.statement{max-width:40rem}
+.prose p.pull,.pull{max-width:52rem;margin-left:0;margin-right:0}
+.close-in{max-width:none}
+.hero .stand{max-width:52rem}
+
+.fig-t{max-width:52ch}
+.guide{max-width:none}
+.mxnote{font-size:16px}
+
+
+@supports (grid-template-rows:subgrid){
+  .hm-cols{grid-template-rows:auto auto auto}
+  .hc{display:grid;grid-template-rows:subgrid;grid-row:span 3;align-content:start}
+  .hc .hstep{min-height:0}
+}
+
+
+.snum{letter-spacing:.01em;margin-bottom:26px}
+
+
+.omt{display:grid;grid-template-columns:172px minmax(0,1fr) minmax(0,1fr)}
+.omt-h{padding:0 0 12px}
+.omt-h b{display:block;font:500 19px/1.2 var(--sans);color:var(--ink);padding-top:11px;border-top:3px solid var(--line2)}
+.omt-h.a b{border-top-color:var(--leak-fill)}
+.omt-h.b b{border-top-color:var(--people)}
+.omt-h.a{padding-left:20px}
+.omt-h.b{padding-left:20px}
+.omt-h span{display:block;font:400 12.5px/1.45 var(--mono);color:var(--mut);margin-top:5px}
+.omt-r{font:600 15px/1.35 var(--sans);color:var(--ink);padding:16px 16px 17px 0;border-top:1px solid var(--line)}
+.omt-c{padding:16px 20px 17px;border-top:1px solid var(--line);font-size:14.5px;line-height:1.5}
+.omt-c.a{color:var(--mut)}
+.omt-c.b{color:var(--ink);background:color-mix(in srgb,var(--people-soft) 34%,var(--paper))}
+.omt-c::before{display:none;content:attr(data-side);font:500 10.5px/1.8 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--mut)}
+@media (max-width:900px){
+  .omt{display:block}
+  .omt-h{display:none}
+  .omt-r{border-top:2px solid var(--ink);padding:20px 0 0}
+  .omt-c{border-top:0;padding:4px 14px 10px;margin-top:8px}
+  .omt-c.a{background:var(--surface)}
+  .omt-c::before{display:block}
+}
+.lg-c::before{display:none;content:attr(data-cycle);font:500 10.5px/1.4 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--mut)}
+@media (max-width:900px){
+  .lg{display:block}
+  .lg-h{display:none}
+  .lg-r{border-top:2px solid var(--ink);padding:20px 0 2px}
+  .lg-c{border-top:0;padding:10px 0 0;gap:6px}
+  .lg-c::before{display:block}
+}
+
+@media (max-width:1000px){
+  .simp .sim-read{grid-template-columns:1fr}
+  .simp .sim-read div+div{border-left:0;padding-left:0;border-top:1px solid var(--line)}
+}
+.hero .byline{margin:36px 0 0;font:400 20px/1.5 var(--sans);color:var(--hero-ink)}
+.hero .byline span{display:block;font:500 13px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#a8a8a8;margin-bottom:4px}
+.mnw{margin-bottom:16px}
+:root{--desk:#a8a8a8}:root[data-theme="dark"]{--desk:#6f6f6f}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--desk:#6f6f6f}}
+.cb-bar i.desk{background:var(--desk)}.cb-segs span::before{background:var(--desk)}
+.cyc-steps h4{font:600 13px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+.cyc .input path{stroke-width:2.5}.cyc .input text{font-weight:600}
+
+.prose > p,.prose > ol.steps,.ctx,.view,.paths,.prose p.pull,.pull,.hero .stand,.hero p{max-width:76rem}
+.statement{max-width:64rem}
+.fig-t{max-width:none}
+.guide{max-width:none}
+h2.h{max-width:30ch}
+h3.h,.prose > h3.h{max-width:none}
+.hero h1{max-width:24ch}
+.hero h1 em{max-width:60ch}
+.choices,.trio,.levers,.pair,.roleduo,.cost-note,.close-in{max-width:none}
+@media (min-width:1400px){
+  body{font-size:19px}
+  .prose p.lead{font-size:24px}
+  .ctx{font-size:21px}
+  .hero .stand{font-size:24px}
+}
+.hero .byline{font-size:23px}
+.hero .byline span{font-size:14px}
+.protect{grid-template-columns:1fr;gap:12px}
+.protect h3{font:400 26px/1.3 var(--sans)}
+.protect h3 em{display:inline;font:300 italic 26px/1.3 var(--serif);margin:0}
+h2.h{max-width:none;font-size:clamp(40px,5vw,72px)}
+.close p{max-width:76rem}
+.close h2{max-width:none}
+main .guide p b,main .guide p.do b{font-size:13px}
+main .guide p span,main .guide p.do span,main .guide p.do strong{font-size:16px}
+main .fig-l .n{font-size:13px}
+main .badge{font-size:12.5px}
+main .pp{font-size:13px}
+main .fig-c,main .fig-c b,main .fig-c i{font-size:15.5px}
+main .fig-c a.fn{font-size:12.5px}
+main .view > b{font-size:13px}
+main .sim-read span{font-size:13.5px}
+main .simp .setup{font-size:14.5px}
+main .lvl{font-size:12.5px}
+main .lg-c i em{font-size:12px}
+main .lg-c i,main .lg-c q{font-size:16px}
+main .lg-h span{font-size:14px}
+main .lg-n span{font-size:13.5px}
+main .cb-l span{font-size:13.5px}
+main .cb-o span,main .cb-segs,main .cb-segs span{font-size:15.5px}
+main .cb-div{font-size:16px}
+main .omt-h span{font-size:14.5px}
+main .omt-c{font-size:16px}
+main .paths span{font-size:16px}
+main .hdec em{font-size:12.5px}
+main .hdec{font-size:15px}
+main .hs span{font-size:14.5px}
+main .hstep{font-size:15.5px}
+main .henter span,main .hprot span{font-size:16px}
+main .hm-ret span{font-size:13px}
+main .sr-same em,main .sr-ch em{font-size:12.5px}
+main .sr-tags span{font-size:15.5px}
+main .itsm .hd{font-size:13px}
+main .vst span{font-size:15px}
+main .roleduo h4{font-size:13.5px}
+main .dr-axis span{font-size:13px}
+main .dr-z h5{font-size:16.5px}
+main .dr-z p{font-size:15px}
+main .dr-stop{font-size:15.5px}
+main .meas h5{font-size:13.5px}
+main .mx-h span{font-size:14.5px}
+main .mx-c i{font-size:16px}
+main .skills p{font-size:15.5px}
+main .cyc-steps h4{font-size:14px}
+main .cyc li{font-size:16px}
+main .hero .byline span{font-size:15px}
+.sources li{font-size:16px}
+.foot{font-size:13.5px}
+.metro .lane{font-size:17px}
+.metro .lane2{font-size:14.5px}
+.metro .st text{font-size:16.5px}
+.metro .st text.s{font-size:14.5px}
+.leakmsg{font-size:14.5px}
+.retl{font-size:14.5px}
+main .simp .sim-read span{font-size:13.5px}
+main .lg-c .lvl{font-size:13px}
+main .lg-c i em{font-size:13px}
+main .fig-l .badge{font-size:13px}
+main .hdec em,main .samerow .sr-same em,main .samerow .sr-ch em{font-size:13px}
+@media (max-width:560px){
+  .cyc .nd text{font-size:17px}
+  .cyc .nd text.s{display:none}
+  .cyc .nd text:not(.s){transform:translateY(9px)}
+  .cyc .input text{font-size:17px}
+  .cyc .ctr{font-size:25px}
+  .venn .c1 text + text,.venn .c2 text + text{font-size:19px}
+  .venn .ov text{font-size:20px}
+  .venn .frm text{font-size:18px}
+  .venn .frm text + text{font-size:16.5px}
+  .metro .st text{font-size:18px}
+  .metro .st text.s{font-size:16px}
+  .metro .lane2,.metro .retl,.metro .leakmsg{font-size:16px}
+}
+@media (max-width:560px){
+  main #fig-cyc .cyc .nd text{font-size:17px}
+  main #fig-cyc .cyc .nd text.s{display:none}
+  main #fig-cyc .cyc .input text{font-size:17px}
+}
+@media (max-width:560px){
+  main #fig-cyc .cyc svg{width:calc(100% + 40px);max-width:none;margin:0 -20px}
+  main #fig-cyc .cyc .nd text{font-size:20px}
+  main #fig-cyc .cyc .nd rect{width:184px;transform:translateX(-14px)}
+  main #fig-cyc .cyc .input text{font-size:20px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#s1">Skip to content</a>
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><i></i><b>Role redesign</b><span>Part 2: How roles change</span></div>
+    <nav class="toplinks" aria-label="Sections">
+      <a href="#s1"><em>&#9654;</em>Recap</a>
+      <a href="#s2"><em>01</em>Roles</a>
+      <a href="#s3"><em>02</em>In practice</a>
+      <a href="#s4"><em>03</em>Managing</a>
+      <a href="#s5"><em>04</em>Discipline</a>
+      <a href="#close"><em>&mdash;</em>Shared responsibility</a>
+    </nav>
+    <button class="theme" type="button" aria-label="Switch colour theme">Dark</button>
+  </div>
+  <div class="prog" aria-hidden="true"></div>
+</header>
+
+<div class="wrap">
+<main id="top">
+
+<section class="hero" aria-labelledby="title">
+  <div class="hero-in">
+    <p class="kick">Point of view for CIOs and CHROs &middot; Part 2 of 2</p>
+    <h1 id="title">How roles change <em>and how to run the organization around them</em></h1>
+    <p class="stand">Part 1 argued that strategy, structure and the use of released capacity need settling before any role changes. This part covers the roles themselves: the method for changing them, what it looks like in an IT service, how to manage the organization once they have changed, and how to keep redesign going as AI capability moves on.</p>
+    <p class="byline"><span>Authors</span>Chris Colligan, Emily Lansdowne, Paul Veiga and Vinu Cherian</p>
+  </div>
+</section>
+
+<section class="s intro" id="s1" aria-labelledby="h1x">
+  <span class="snum"><b>&#9654;</b>Where Part 1 left off</span>
+  <h2 class="h" id="h1x">Role redesign sits in steps 4 and 5 <em>of a six-step sequence</em></h2>
+  <div class="prose">
+    <p class="lead">Part 1 set out a six-step sequence for bringing AI into an organization. The first three steps settle what the business needs, how work is organized, and where the time AI releases will go. Roles change in steps 4 and 5, once those are in place.</p>
+    <ol class="steps">
+      <li><span><b>Strategy.</b> What the business needs to achieve.</span></li>
+      <li><span><b>Structure.</b> How the operating model organizes work, ownership and value streams to deliver it.</span></li>
+      <li><span><b>Capacity released.</b> The human time AI frees up, and where leaders decide to put it.</span></li>
+      <li><span><b>Role changes.</b> How roles and skills change around the new work. <em>Covered in this part.</em></span></li>
+      <li><span><b>Reskilling.</b> The training, practice and support people need to perform the reshaped role. <em>Covered in this part.</em></span></li>
+      <li><span><b>Management.</b> How the operating model is now run: decision rights, accountability, measures and teams.</span></li>
+    </ol>
+  </div>
+  <div class="view"><b>Our view</b><p>Role redesign is an operating model decision, and it should follow from strategy and structure rather than from whichever tools arrive first. The CEO and COO set the operating model and business unit leaders run the work it changes. Inside it, the CIO and the CHRO shape the role decisions together; neither can make them alone.</p></div>
+</section>
+
+<section class="s" id="s2" aria-labelledby="h4x">
+  <span class="snum"><b>01</b>How roles change</span>
+  <h2 class="h" id="h4x">Roles change by design, <em>guided by a method</em></h2>
+  <div class="prose"><p class="lead">This section goes inside steps 4 and 5 of the <a href="#s1">six-step sequence</a>: role changes and reskilling. Once strategy, structure and capacity are clear, role choices follow a defined method. Every role change should trace back to a decision someone made, and be explainable to the person whose job it is.</p></div>
+
+  <figure class="fig" id="fig-meth">
+    <div class="fig-h">
+      <div>
+        <span class="fig-l"><span class="n">FIGURE 1</span>Inside steps 4 and 5: role changes and reskilling</span>
+        <h3 class="fig-t">An enterprise view first, then the work itself, <em>the three decisions it forces, and one guardrail under all of them</em></h3>
+        <div class="guide">
+          <p><b>Shows</b><span>The enterprise view sits on top: it decides which workflow to start with. The work then runs left to right, with the decision each part forces underneath it. Protect runs below everything.</span></p>
+          <p class="do"><b>Try</b><span>Select any step to stop on it. Select <strong>Play</strong> to resume the walk-through.</span></p>
+        </div>
+      </div>
+      <div class="fig-ctl"><button class="pp" type="button" aria-pressed="false">Pause</button></div>
+    </div>
+    <div class="fig-b">
+      <div class="hm">
+        <button type="button" class="henter" data-k="enter"><b>Before any workflow: the enterprise view</b><span>Assess capability maturity and the skills position across the enterprise before dropping into a single workflow. This is where the sourcing choices belong (which capabilities to build inside, hire, upskill or source externally), and it tells you which workflow is worth starting with. The per-role Skill Shifts in Figure 2 sit underneath these enterprise choices; they do not replace them.</span></button>
+        <div class="hm-ret" aria-hidden="true"><span>Repeat at the next signal</span></div>
+        <div class="hm-cols">
+          <button type="button" class="hc" data-k="signal"><span class="hs"><b>Signal</b><span>Pick the workflow</span></span><span class="hstep">Start with the workflow the enterprise view points to: where AI has the most potential to change how work gets done.</span></button>
+          <button type="button" class="hc" data-k="decon"><span class="hs"><b>Deconstruct jobs</b><span>Into tasks</span></span><span class="hstep">Take today&rsquo;s jobs apart into the tasks they are made of.</span></button>
+          <button type="button" class="hc" data-k="realloc"><span class="hs"><b>Reallocate tasks</b><span>People, automation, AI</span></span><span class="hstep">Decide which tasks go to people, automation or AI.</span><span class="hdec"><em>Decision</em><b>Each person&rsquo;s path</b>Reskill, redeploy or plan an exit for each person, applying the capacity choice made in Part 1.</span></button>
+          <button type="button" class="hc" data-k="recon"><span class="hs"><b>Reconstruct work</b><span>Roles for future fit</span></span><span class="hstep">Rebuild the work so roles fit the future.</span><span class="hdec"><em>Decision</em><b>Adopt &amp; Adapt</b>Retire, Reshape, Reinforce or Build each part of the work. See Figure 2.</span></button>
+          <button type="button" class="hc" data-k="wt"><span class="hs"><b>Workforce transformation</b><span>Make it stick</span></span><span class="hstep">Set performance expectations, build the reskilling people need to perform the new role, and manage the change.</span><span class="hdec"><em>Decision</em><b>Skill Shifts</b>Amplify the skills people have; add the new ones the work needs.</span></button>
+        </div>
+        <button type="button" class="hprot" data-k="protect"><b>Protect, throughout:</b><span>When routine work moves to agents, the experience that built judgment moves with it. Say how people will learn the craft, keep critical skills in practice and step in when the technology fails.</span></button>
+      </div>
+    </div>
+  </figure>
+
+  <p class="ctx">Most of the change happens in the Reconstruct work step. Once a job is broken into tasks, leaders decide what happens to each part of the work. We call this Adopt &amp; Adapt, and it gives four options: retire the work, reshape it, reinforce it or build something new. The skills inside each role shift with those choices.</p>
+  <figure class="fig feature" id="fig-sort">
+    <div class="fig-h">
+      <div>
+        <span class="fig-l"><span class="n">FIGURE 2</span>Adopt &amp; Adapt, and the skill shifts inside each role<span class="badge">Core framework</span></span>
+        <h3 class="fig-t">The work is broken into parts, <em>and each part is retired, reshaped, reinforced or built</em></h3>
+        <div class="guide">
+          <p><b>Shows</b><span>The work of an IT service, with every part placed by what happens to it and the role it belongs to.</span></p>
+          <p class="do"><b>Read</b><span>Down a column for one option. Across a row for one role.</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="fig-b">
+      <div class="mx"></div>
+      <p class="mxnote"><b>Every role is touched by all four options.</b> Each of these roles loses some work, keeps some in a changed form, gains weight in some areas and picks up some new work. No role simply stays as it was or disappears, and for most people the biggest change is reshaped work.</p>
+      <p class="skl">Then, inside each reshaped role: the Skill Shifts</p>
+      <div class="skills">
+        <div><h4>Amplify</h4><p>Skills people have, now worth more</p>
+          <div class="sk amp"><span style="--i:0">System design</span><span style="--i:1">Complex troubleshooting</span><span style="--i:2">Security judgment</span><span style="--i:3">Business context</span></div></div>
+        <div><h4>Add</h4><p>Skills the work did not need before</p>
+          <div class="sk add"><span style="--i:4">Writing specifications agents can execute</span><span style="--i:5">Designing evaluations</span><span style="--i:6">Operating agents</span></div></div>
+      </div>
+    </div>
+  </figure>
+
+</section>
+
+<section class="s" id="s3" aria-labelledby="h5x">
+  <span class="snum"><b>02</b>What it looks like in practice</span>
+  <h2 class="h" id="h5x">Same titles, <em>different jobs</em></h2>
+  <div class="prose"><p class="lead">The same shift is happening across knowledge work. Analysts, engineers, underwriters and planners are moving from producing work to directing it, checking it and owning the outcome. IT service management shows it most clearly: demand falls fast once agents arrive, and the economics are easy to see.</p></div>
+
+  <figure class="fig feature" id="fig-itsm">
+    <div class="fig-h">
+      <div>
+        <span class="fig-l"><span class="n">FIGURE 3</span>Restoring service: four ITSM roles, before and after agents<span class="badge">Worked example</span></span>
+        <h3 class="fig-t">Roles move from doing the work <em>to directing and owning it</em></h3>
+        <div class="guide"><p><b>Shows</b><span>The top row shows the four stages of restoring service; a blue dot means agents can now take on part of that stage. Each row below is one role: the job before agents, the job with agents (blue boxes) and the result (teal boxes). Illustrative.</span></p></div>
+      </div>
+      <div class="fig-ctl"><button class="pp" type="button" aria-pressed="false">Pause</button></div>
+    </div>
+    <div class="fig-b">
+      <p class="skl" style="margin-top:0">The value stream for restoring service: every stage is now a candidate for AI</p>
+      <div class="vs">
+        <div class="vst" style="--i:0"><b>Detect</b><span>A fault is detected</span><i aria-hidden="true"></i></div>
+        <div class="vst" style="--i:1"><b>Diagnose</b><span>The cause is found</span><i aria-hidden="true"></i></div>
+        <div class="vst" style="--i:2"><b>Fix</b><span>Service is restored</span><i aria-hidden="true"></i></div>
+        <div class="vst" style="--i:3"><b>Record</b><span>So the next one goes faster</span><i aria-hidden="true"></i></div>
+      </div>
+      <div class="itsm" style="margin-top:22px">
+        <span class="hd">Role</span><span class="hd">Before</span><span class="hd"></span><span class="hd">Augmented by agents</span><span class="hd"></span><span class="hd">Impact</span>
+
+        <span class="rl">Service desk analyst</span>
+        <div class="ic" style="--d:.0s"><b>Works routine queues</b>Resets, access, errors</div><i class="ia" style="--d:1.6s"></i>
+        <div class="ic aug" style="--d:2.2s"><b>Curates agent knowledge</b>Owns exceptions and quality</div><i class="ia" style="--d:3.8s"></i>
+        <div class="ic imp" style="--d:4.4s"><b>Fewer people on routine queues</b></div>
+
+        <span class="rl">Operations engineer</span>
+        <div class="ic" style="--d:.3s"><b>Watches alerts</b>Runs runbooks by hand</div><i class="ia" style="--d:1.9s"></i>
+        <div class="ic aug" style="--d:2.5s"><b>Runs remediation agents</b>Leads major incidents</div><i class="ia" style="--d:4.1s"></i>
+        <div class="ic imp" style="--d:4.7s"><b>Faster restoration</b></div>
+
+        <span class="rl">Problem manager</span>
+        <div class="ic" style="--d:.6s"><b>Analyzes trends</b>After the fact</div><i class="ia" style="--d:2.2s"></i>
+        <div class="ic aug" style="--d:2.8s"><b>Uses agent signals</b>To remove demand at source</div><i class="ia" style="--d:4.4s"></i>
+        <div class="ic imp" style="--d:5.0s"><b>Less repeat demand</b></div>
+
+        <span class="rl">Service owner</span>
+        <div class="ic" style="--d:.9s"><b>Reports against</b>service levels</div><i class="ia" style="--d:2.5s"></i>
+        <div class="ic aug" style="--d:3.1s"><b>Owns the agent-supported service</b>Its cost and risk</div><i class="ia" style="--d:4.7s"></i>
+        <div class="ic imp" style="--d:5.3s"><b>Clear accountability</b></div>
+      </div>
+      <div class="samerow">
+        <div class="sr-same"><em>Stays the same</em><b>The job title</b></div>
+        <div class="sr-arrow" aria-hidden="true"></div>
+        <div class="sr-ch"><em>Redesigned underneath it</em>
+          <div class="sr-tags"><span style="--d:6.0s">Job description</span><span style="--d:6.4s">Performance measures</span><span style="--d:6.8s">Career path</span><span style="--d:7.2s">Training</span></div>
+        </div>
+      </div>
+    </div>
+  </figure>
+
+  <h3 class="h">One role up close: <em>the service desk analyst</em></h3>
+  <div class="roleduo">
+    <div>
+      <h4>Today</h4>
+      <p>Most of their time goes on structured, repeatable cases: password resets, access requests, known errors. They find the resolution path, escalate where needed, and log the outcome. Their value is throughput. Their expertise builds through repetition.</p>
+    </div>
+    <div>
+      <h4>With agents handling the routine load</h4>
+      <ul>
+        <li>Define the outcomes agents should achieve, and when a case should escalate.</li>
+        <li>Curate the knowledge agents resolve from.</li>
+        <li>Handle the exceptions, which are now harder on average.</li>
+        <li>Close the learning loop by reviewing what agents did, and why.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="statement">This is a more skilled role <em>than the one it replaces.</em></p>
+</section>
+
+<section class="s" id="s4" aria-labelledby="h6x">
+  <span class="snum"><b>03</b>Managing the new organization</span>
+  <h2 class="h" id="h6x">These are not just HR decisions; <em>they are operating model decisions</em></h2>
+  <div class="prose"><p class="lead">Redesigned roles need a redesigned organization around them. The CHRO and CIO shape these choices, but most of them land in structures, budgets and measures that the CEO, COO and business unit leaders own. They cannot be settled in HR or IT alone. Most of the organizations we work with are still working this part out.</p></div>
+  <div class="levers">
+    <div><h4>Managing people and agents</h4><p>Team leads now allocate work between people and agents, and own agent cost and risk alongside team health. Span of control should be set by how much work one person can properly review, rather than by headcount.</p></div>
+    <div><h4>Decision rights by risk</h4><p>Routine, reversible decisions can move to agents or to the person closest to the work. Irreversible ones stay with named people. See Figure 4 below.</p></div>
+    <div><h4>Measures that follow value</h4><p>Throughput and tickets closed stop meaning much when agents can produce volume around the clock. Measure outcomes, quality and cost per unit of work instead. See Figure 5 below.</p></div>
+    <div><h4>Contracts and sourcing</h4><p>Supplier agreements and service levels written around human effort need revisiting as demand falls. Build, buy or partner choices also shape which skills stay inside and which oversight roles must be staffed.</p></div>
+    <div><h4>Funding the recurring costs</h4><p>Oversight, reskilling and agent run costs continue for as long as the agents run. They belong in the business case next to the savings.</p></div>
+    <div><h4>Assets with named owners</h4><p>The knowledge base, the agent platform and the evaluation sets are assets the service depends on. Name an owner for each, with a budget and service levels of its own.</p></div>
+    <div><h4>Grading, measures and career paths</h4><p>A reshaped role that asks for more skill than the one it replaced needs regrading, new performance measures and a career path. Without those, people do more skilled work on the old terms.</p></div>
+  </div>
+
+  <p class="ctx">We most often see redesign stall on decision rights and measures. If nobody has the authority to stop an agent, and people are still judged on volume, the reshaped roles cannot work as designed. Figures 4 and 5 show what to change.</p>
+  <div class="pair">
+    <figure class="fig" id="fig-dr">
+      <div class="fig-h">
+        <div>
+          <span class="fig-l"><span class="n">FIGURE 4</span>Decision rights by risk</span>
+          <h3 class="fig-t">Every agent outcome <em>has a human who can stop it</em></h3>
+          <div class="guide"><p><b>Shows</b><span>Decisions arranged by risk, from routine and reversible on the left to irreversible on the right. The higher the risk, the more the decision needs a named person.</span></p></div>
+        </div>
+        <div class="fig-ctl"><button class="pp" type="button" aria-pressed="false">Pause</button></div>
+      </div>
+      <div class="fig-b">
+        <div class="dr-track">
+          <div class="dr-z a" style="--d:.2s"><h5>Agents, or the person closest to the work</h5><p>Routine, reversible decisions</p></div>
+          <div class="dr-z p" style="--d:1.1s"><h5>Named people</h5><p>Irreversible decisions</p></div>
+        </div>
+        <div class="dr-axis"><span>Lower risk: routine, reversible</span><span>Higher risk: irreversible</span></div>
+        <div class="dr-stop" style="margin:14px 0 0"><b>Across the whole range:</b> a human accountable for every outcome an agent touches, with the power to stop it.</div>
+      </div>
+    </figure>
+
+    <figure class="fig" id="fig-meas">
+      <div class="fig-h">
+        <div>
+          <span class="fig-l"><span class="n">FIGURE 5</span>Measures that follow value</span>
+          <h3 class="fig-t">When agents produce volume around the clock, <em>volume stops being the measure</em></h3>
+        </div>
+        <div class="fig-ctl"><button class="pp" type="button" aria-pressed="false">Pause</button></div>
+      </div>
+      <div class="fig-b">
+        <div class="meas">
+          <h5>Stop leaning on</h5><div class="mo"><span style="--i:0">Throughput</span><span style="--i:1">Tickets closed</span></div>
+          <h5>Measure instead</h5><div class="mnw"><span style="--i:0">Outcomes</span><span style="--i:1">Quality</span><span style="--i:2">Cost per unit of work</span></div>
+          <h5>And two that volume reporting never tracked</h5><div class="mnw"><span style="--i:3">Exception rate</span><span style="--i:4">Quality of feedback reaching the agent</span></div>
+        </div>
+      </div>
+      <p class="fig-c"><b>Baseline every measure before go-live.</b> A measure with no starting point cannot show whether the redesign worked.</p>
+    </figure>
+  </div>
+
+</section>
+
+<section class="s" id="s5" aria-labelledby="h7x">
+  <span class="snum"><b>04</b>Make redesign a discipline</span>
+  <h2 class="h" id="h7x">Treat the first design as <em>a hypothesis to test</em></h2>
+  <div class="prose"><p class="lead">Role redesign is often run as a project with a go-live date, but AI capability changes too quickly for that. What agents can do in twelve months will not be what they can do today, and the operating model that makes sense now will need revisiting.</p></div>
+
+
+  <figure class="fig cycfig big" id="fig-cyc">
+    <div class="fig-h">
+      <div>
+        <span class="fig-l"><span class="n">FIGURE 6</span>Redesign as a loop</span>
+        <h3 class="fig-t">Start with one value stream, <em>and run the loop again as capability changes</em></h3>
+        <div class="guide"><p><b>Shows</b><span>The six-step sequence as a loop. The blue dot travels round it, and new AI capability (the yellow arrow) starts the next lap. Blue boxes are operating model decisions; strategy and the use of released capacity are business choices that frame them.</span></p></div>
+      </div>
+      <div class="fig-ctl"><button class="pp" type="button" aria-pressed="false">Pause</button></div>
+    </div>
+    <div class="fig-b">
+      <div class="cyc">
+        <svg viewBox="-10 10 540 420" role="img" aria-label="A loop of six steps: strategy, structure, capacity released, role changes, reskilling, management, then back to strategy as AI capability changes.">
+          <circle class="ring" pathLength="1" cx="260" cy="220" r="160"/>
+          <circle class="runner" r="6" cx="260" cy="60"/>
+          <text class="ctr" x="260" y="214">One value stream,</text>
+          <text class="ctr" x="260" y="240">run as a hypothesis</text>
+          <g class="input"><path d="M36 40 Q96 52 126 104" marker-end="url(#ah)"/><text x="10" y="28">AI capability changes</text></g>
+          <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#f1c21b"/></marker></defs>
+        </svg>
+        <div class="cyc-steps"><h4>Getting the first loop right</h4>
+        <ol>
+          <li><span><b>Choose the stream:</b> one where results are easy to observe, even if it is not the easiest to change.</span></li>
+          <li><span><b>Agree the design:</b> outcomes, capacity choice, role changes, the reskilling people will need, decision rights.</span></li>
+          <li><span><b>Set expectations openly</b> with affected colleagues.</span></li>
+          <li><span><b>Measure more than throughput:</b> downstream workload, exception rates, knowledge quality, and whether people are building judgment.</span></li>
+        </ol></div>
+      </div>
+    </div>
+  </figure>
+</section>
+
+<section class="close" id="close" aria-labelledby="hcx">
+  <div class="close-in">
+    <div>
+      <h2 id="hcx">A shared responsibility <em>with the answer where they meet</em></h2>
+      <p>The value from agents arrives when the organization changes how it operates to match what the technology can do. Speed of deployment matters far less.</p>
+      <p class="last">The CIO brings the technology view, the CHRO the people view. They shape role redesign together, inside an operating model the CEO and COO set and business unit leaders run. The answer sits where all of them meet.</p>
+    </div>
+    <div class="venn">
+      <svg viewBox="0 0 520 380" role="img" aria-label="Two overlapping circles: the CIO's technology view and the CHRO's people and capability view. The overlap is role redesign. Both sit inside a frame: the operating model, set by the CEO and COO and run by business unit leaders.">
+        <g class="frm"><rect x="4" y="4" width="512" height="372" rx="16" fill="none" stroke="rgba(255,255,255,.38)" stroke-width="1.2" stroke-dasharray="5 5"/>
+          <text x="260" y="340" fill="#ffffff" font-size="16" font-weight="600" text-anchor="middle" letter-spacing=".08em">OPERATING MODEL</text>
+          <text x="260" y="360" fill="#c6c6c6" font-size="15.5" text-anchor="middle">Set by the CEO and COO &middot; run by business unit leaders</text></g>
+        <defs><clipPath id="vc"><circle cx="200" cy="170" r="140"/></clipPath></defs>
+        <g class="c1"><circle cx="200" cy="170" r="140" fill="rgba(120,169,255,.14)" stroke="#78a9ff" stroke-width="1.5"/>
+          <text x="122" y="160" fill="#a6c8ff" font-size="22" font-weight="500" text-anchor="middle">CIO</text>
+          <text x="122" y="184" fill="#c6c6c6" font-size="15.5" text-anchor="middle">Technology</text><text x="122" y="202" fill="#c6c6c6" font-size="15.5" text-anchor="middle">view</text></g>
+        <g class="c2"><circle cx="320" cy="170" r="140" fill="rgba(8,189,186,.12)" stroke="#08bdba" stroke-width="1.5"/>
+          <text x="398" y="160" fill="#3ddbd9" font-size="22" font-weight="500" text-anchor="middle">CHRO</text>
+          <text x="398" y="184" fill="#c6c6c6" font-size="15.5" text-anchor="middle">People and</text><text x="398" y="202" fill="#c6c6c6" font-size="15.5" text-anchor="middle">capability view</text></g>
+        <g class="ov"><circle cx="320" cy="170" r="140" clip-path="url(#vc)" fill="rgba(255,255,255,.14)"/>
+          <text x="260" y="164" fill="#ffffff" font-size="17" font-weight="600" text-anchor="middle">Role</text>
+          <text x="260" y="186" fill="#ffffff" font-size="17" font-weight="600" text-anchor="middle">redesign</text></g>
+      </svg>
+      <button class="pp" type="button" aria-pressed="false">Pause</button>
+    </div>
+  </div>
+</section>
+
+<section class="sources" id="sources" aria-label="Notes">
+  <p class="foot">Point of view &middot; Part 2 of 2 &middot; 2026. The service desk example and all diagrams are illustrative.</p>
+</section>
+
+</main>
+
+<aside class="rail" aria-label="In this article">
+  <h2>In this article <b data-pct>0%</b></h2>
+  <ol>
+    <li><a href="#s1"><span>&#9654;</span>Where Part 1 left off</a></li>
+    <li><a href="#s2"><span>01</span>How roles change</a></li>
+    <li><a href="#s3"><span>02</span>What it looks like in practice</a></li>
+    <li><a href="#s4"><span>03</span>Managing the new organization</a></li>
+    <li><a href="#s5"><span>04</span>Make redesign a discipline</a></li>
+    <li><a href="#close"><span>&mdash;</span>A shared responsibility</a></li>
+  </ol>
+  <a class="up" href="#top">&uarr; Back to the top</a>
+</aside>
+</div>
+
+<script>
+(()=>{
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const root=document.documentElement;
+const NS='http://www.w3.org/2000/svg';
+
+
+const tb=$('.theme');
+const store={get(k){try{return localStorage.getItem(k);}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,v);}catch(e){}}};
+function setTheme(t,save){root.dataset.theme=t;tb.textContent=t==='dark'?'Light':'Dark';tb.setAttribute('aria-label','Switch to '+(t==='dark'?'light':'dark')+' theme');if(save)store.set('rr-theme',t);}
+setTheme(store.get('rr-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+tb.addEventListener('click',()=>setTheme(root.dataset.theme==='dark'?'light':'dark',true));
+
+
+const prog=$('.prog'),pct=$('[data-pct]');
+const secs=$$('#s1,#s2,#s3,#s4,#s5,#s6,#s7,#close,#sources');
+const navLinks=$$('.toplinks a,.rail ol a');
+let ticking=false;
+function onScroll(){
+  ticking=false;
+  const h=root.scrollHeight-innerHeight, p=h>0?Math.max(0,Math.min(1,scrollY/h)):0;
+  prog.style.width=(p*100)+'%'; if(pct) pct.textContent=Math.round(p*100)+'%';
+  let cur=null; for(const s of secs){ if(s.getBoundingClientRect().top<innerHeight*.4) cur=s.id; }
+  navLinks.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));
+}
+addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(onScroll);}},{passive:true});
+onScroll();
+
+
+function tween(el,to,dur,fmt){
+  if(RM||dur<=0){el.textContent=fmt(to);return;}
+  const t0=performance.now();
+  const step=t=>{const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);el.textContent=fmt(to*e);if(k<1)requestAnimationFrame(step);};
+  requestAnimationFrame(step);
+}
+function seen(el,cb,th){new IntersectionObserver(es=>{for(const e of es) cb(e.isIntersecting);},{threshold:th||.25}).observe(el);}
+
+function pauser(btn,onChange){
+  if(!btn) return {get paused(){return false;},set(){}};
+  let paused=false;
+  const set=v=>{paused=v;btn.setAttribute('aria-pressed',v);btn.textContent=v?'Play':'Pause';};
+  btn.addEventListener('click',()=>{set(!paused);onChange(paused);});
+  return {get paused(){return paused;},set};
+}
+
+function loopFig(el,o){
+  const btn=o.btn||$('.pp',el);
+  if(RM){ el.classList.add('noanim'); o.reset(); o.play(true); return {later:(f,ms)=>setTimeout(f,ms),restart(){}}; }
+  let vis=false,started=false,held=[]; const T=[];
+  function fire(t){const k=T.indexOf(t);if(k>=0)T.splice(k,1);t.fn();}
+  function later(fn,ms){const t={fn,due:performance.now()+ms};t.id=setTimeout(()=>fire(t),ms);T.push(t);return t;}
+  const clear=()=>{T.forEach(t=>clearTimeout(t.id));T.length=0;held=[];if(o.stop)o.stop();};
+  function freeze(){const now=performance.now();T.forEach(t=>{clearTimeout(t.id);t.rem=Math.max(0,t.due-now);});held=el.getAnimations({subtree:true}).filter(a=>a.playState==='running');held.forEach(a=>a.pause());if(o.pause)o.pause();}
+  function thaw(){const now=performance.now();T.forEach(t=>{t.due=now+t.rem;t.id=setTimeout(()=>fire(t),t.rem);});held.forEach(a=>a.play());held=[];if(o.resume)o.resume();}
+  function cycle(){
+    clear(); started=true; el.classList.add('noanim'); el.classList.remove('fading'); o.reset(); void el.offsetWidth; el.classList.remove('noanim');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      o.play(false);
+      if(o.period) later(()=>{el.classList.add('fading');later(cycle,700);},o.period);
+    }));
+  }
+  const P=pauser(btn,paused=>{ if(paused) freeze(); else if(started) thaw(); else if(vis) cycle(); });
+  seen(el,v=>{ if(v===vis) return; vis=v; if(P.paused) return; if(v) cycle(); else { clear(); started=false; el.classList.remove('fading'); } },o.th||.3);
+  return {later,restart:()=>{ if(vis&&!P.paused) cycle(); }};
+}
+const cssLoop=(id,period,extra)=>{const el=document.getElementById(id); if(!el) return;
+  loopFig(el,{period,reset:()=>{el.classList.remove('play'); if(extra&&extra.reset) extra.reset(el);},play:(inst)=>{el.classList.add('play'); if(extra&&extra.play) extra.play(el,inst);}});};
+
+
+(function(){
+  const fig=$('#fig-sim'); if(!fig) return;
+  const C={agent:'#78a9ff',leak:'#f1c21b',people:'#08bdba',ink:'#f4f4f4',ink2:'#c6c6c6',mut:'#8d8d8d',band:'rgba(120,169,255,.10)'};
+  const SPAWN=.2, EXP=.28, EXP_FLOOR=.12, SPEED=120;
+  function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  function makeSim(panel){
+    const mode=panel.dataset.mode, cv=$('canvas',panel), ctx=cv.getContext('2d');
+    const R={res:$('[data-r="res"]',panel),q:$('[data-r="q"]',panel),spark:$('[data-r="spark"]',panel),exp:$('[data-r="exp"]',panel)};
+    let W=0,H=0,parts=[],queue=0,resolved=0,tSpawn=0,tServe=0,tHist=0,hist=[],G,rand,exp=EXP,svN=0;
+    const serveEvery=mode==='bolt'?1.8:0.5;
+    
+    
+  const QA=0, LEARN=mode==='bolt'?0:.0035;
+    function geo(){ const n=W<700, lx=W*.62;
+      
+      const lanes = mode==='bolt'
+        ? [{x:lx,y:H*.68,n:'Service desk analyst',s:'Same job, more of it'}]
+        : [{x:lx,y:H*.56,n:'Service desk analyst',s:'Owns the hard cases'},
+           {x:lx,y:H*.68,n:'Service desk analyst',s:'Curates knowledge'},
+           {x:lx,y:H*.80,n:'Operations engineer',s:'Runs the agents'}];
+      G={n,lanes,src:{x:8,y:H*.36},gate:{x:W*.28,y:H*.36},res:{x:W*.50,y:H*.12},q:{x:W*.33,y:H*.50,w:W*.22,h:H*.38},qa:{x:W*.50,y:H*.30}}; }
+    function size(){const r=cv.getBoundingClientRect(),dpr=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);geo();}
+    function reset(){parts=[];queue=0;resolved=0;tSpawn=0;tServe=0;tHist=0;hist=[0];exp=EXP;svN=0;rand=rng(20261015);}
+    function path(pts){let L=0;const seg=[];for(let i=1;i<pts.length;i++){const d=Math.hypot(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y);seg.push(d);L+=d;}return{pts,seg,L};}
+    function at(p,s){let i=0;while(i<p.seg.length&&s>p.seg[i]){s-=p.seg[i];i++;}if(i>=p.seg.length)return p.pts[p.pts.length-1];const a=p.pts[i],b=p.pts[i+1],k=s/p.seg[i];return{x:a.x+(b.x-a.x)*k,y:a.y+(b.y-a.y)*k};}
+    function spawn(){
+      const j=(rand()-.5)*H*.22, ex=rand()<exp, r1=rand(), r2=rand(), qa=!ex&&rand()<QA;
+      const p0={x:G.src.x,y:G.src.y+j}, p1={x:G.gate.x,y:G.gate.y+j*.35};
+      const pres={x:G.res.x+(r1-.5)*30,y:G.res.y+(r2-.5)*16};
+      const pts=ex?[p0,p1,{x:G.gate.x+40,y:p1.y},{x:G.q.x-4,y:G.q.y+G.q.h*.55+(r1-.5)*G.q.h*.3}]
+                 :qa?[p0,p1,{x:G.gate.x+40,y:p1.y},pres,{x:G.qa.x+(r2-.5)*18,y:G.qa.y+(r1-.5)*18}]
+                 :[p0,p1,{x:G.gate.x+40,y:p1.y},pres];
+      parts.push({k:ex?'ex':qa?'qa':'rt',p:path(pts),s:0,fade:1});
+    }
+    function serve(){ if(queue<=0) return; queue--; const y=G.q.y+G.q.h*.5;
+      
+      if(LEARN) exp=Math.max(EXP_FLOOR,exp-LEARN);
+      const L=G.lanes[svN++%G.lanes.length];
+      parts.push({k:'sv',p:path([{x:G.q.x+G.q.w+6,y},{x:L.x-8,y:L.y}]),s:0,fade:1}); }
+    function capacity(){const q=G.q,P=8;return Math.max(1,Math.floor((q.w-8)/P))*Math.max(1,Math.floor((q.h-8)/P));}
+    function step(dt){
+      tSpawn+=dt; while(tSpawn>SPAWN){tSpawn-=SPAWN;spawn();}
+      tServe+=dt; while(tServe>serveEvery){tServe-=serveEvery;serve();}
+      tHist+=dt; if(tHist>.6){tHist=0;hist.push(queue);if(hist.length>120)hist.shift();}
+      for(const o of parts){
+        if(o.s<o.p.L){o.s+=SPEED*dt*(o.k==='sv'?.8:1); if(o.s>=o.p.L){ if(o.k==='ex'){o.dead=true;queue++;} else if(o.k==='rt'||o.k==='qa'){resolved++;} }}
+        else {o.fade-=dt*1.4; if(o.fade<=0) o.dead=true;}
+      }
+      parts=parts.filter(o=>!o.dead);
+    }
+    function label(t,x,y,c,f,al){ctx.fillStyle=c;ctx.font=f;ctx.textAlign=al||'left';ctx.fillText(t,x,y);}
+    
+    function person(x,y,c){
+      ctx.fillStyle=c;
+      ctx.beginPath();ctx.arc(x,y-5,3.4,0,7);ctx.fill();
+      ctx.beginPath();ctx.arc(x,y+6,5.8,Math.PI,0);ctx.fill();
+    }
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      const mono='400 13px "IBM Plex Mono",ui-monospace,monospace', sans='500 14px "IBM Plex Sans",system-ui,sans-serif';
+      ctx.fillStyle=C.band;ctx.fillRect(G.gate.x-12,G.src.y-H*.2,24,H*.4);
+      ctx.strokeStyle=C.agent;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(G.gate.x,G.src.y-H*.2);ctx.lineTo(G.gate.x,G.src.y+H*.2);ctx.stroke();
+      label('Work in',G.src.x,G.src.y-H*.15,C.ink2,mono);
+      label('Agents',G.gate.x,G.src.y-H*.22-6,C.agent,mono,'center');
+      label(W<380?'Resolved':'Resolved by agents',G.res.x+14,G.res.y+4,C.ink,sans);
+      const q=G.q, bolt=mode==='bolt';
+      ctx.strokeStyle=bolt?C.leak:C.people;ctx.setLineDash(bolt?[4,4]:[]);ctx.lineWidth=1.2;ctx.strokeRect(q.x,q.y,q.w,q.h);ctx.setLineDash([]);
+      label(W<380?'To review':'Exceptions to review',q.x,q.y-22,C.ink,sans);
+      label(bolt?(W<380?'Unplanned':'Nobody planned for it'):(W<380?'Staffed':'Owned in three reshaped jobs'),q.x,q.y-7,bolt?C.leak:C.people,mono);
+      const P=8,cols=Math.max(1,Math.floor((q.w-8)/P)),cap=capacity(),show=Math.min(queue,cap);
+      ctx.fillStyle=C.leak;
+      for(let i=0;i<show;i++){const cx=q.x+6+(i%cols)*P,cy=q.y+q.h-7-Math.floor(i/cols)*P;ctx.beginPath();ctx.arc(cx,cy,2.7,0,7);ctx.fill();}
+      
+      for(const L of G.lanes){
+        person(L.x,L.y,C.people);
+        if(W>=330){ label(L.n,L.x+16,L.y+1,C.ink,sans); label(L.s,L.x+16,L.y+17,bolt?C.mut:C.people,mono); }
+      }
+      for(const o of parts){
+        const pt=at(o.p,Math.min(o.s,o.p.L));
+        ctx.globalAlpha=Math.max(0,o.fade);
+        ctx.fillStyle=o.k==='rt'?C.agent:o.k==='ex'?C.leak:C.people;
+        ctx.beginPath();ctx.arc(pt.x,pt.y,o.k==='rt'?2.4:3,0,7);ctx.fill();
+      }
+      ctx.globalAlpha=1;
+    }
+    function readouts(){
+      R.res.textContent=resolved.toLocaleString(); R.q.textContent=queue.toLocaleString();
+      if(R.exp) R.exp.textContent=Math.round(exp*100)+'%';
+      const mx=Math.max(30,...hist),n=hist.length;
+      R.spark.setAttribute('d',hist.map((v,i)=>(i?'L':'M')+(n>1?i/119*300:0).toFixed(1)+' '+(24-v/mx*21).toFixed(1)).join(' '));
+    }
+    size(); reset();
+    let rw=0,rh=0,rq=0; new ResizeObserver(es=>{const r=es[0].contentRect,w=Math.round(r.width),h=Math.round(r.height); if(w===rw&&h===rh) return; rw=w;rh=h; cancelAnimationFrame(rq); rq=requestAnimationFrame(()=>{size();draw();});}).observe(cv);
+    return {step,draw,readouts,reset,full:()=>queue>=capacity()*.92};
+  }
+  const sims=$$('.simp',fig).map(makeSim);
+  let running=false,vis=false,last=0,tAll=0,tRead=0;
+  function loop(t){
+    if(!running) return; const dt=Math.min(.05,(t-last)/1000||0); last=t; tAll+=dt;
+    sims.forEach(s=>s.step(dt));
+    if(tAll>95||sims.some(s=>s.full())){tAll=0;sims.forEach(s=>s.reset());}
+    sims.forEach(s=>s.draw()); tRead+=dt; if(tRead>.25){tRead=0;sims.forEach(s=>s.readouts());}
+    requestAnimationFrame(loop);
+  }
+  const P=pauser($('.pp',fig),()=>sync());
+  function sync(){ const want=vis&&!P.paused&&!RM; if(want&&!running){running=true;last=performance.now();requestAnimationFrame(loop);} else if(!want) running=false; }
+  seen(fig,v=>{vis=v;sync();},.15);
+  if(RM){ sims.forEach(s=>{for(let i=0;i<500;i++) s.step(.05); s.draw(); s.readouts();}); }
+})();
+
+
+(function(){
+  const fig=$('#fig-metro'); if(!fig) return;
+  const svg=$('svg',fig), det=$('.mdet',fig);
+  const TXT={
+    a0:['Strategy','What the business needs to achieve.'],
+    a1:['Add AI tools','Tools are deployed into existing teams. Roles, decision rights and handoffs stay as they were.'],
+    a2:['Adjust roles','Roles are adjusted after the fact, around whatever the tools changed.'],
+    a3:['Value leaks','Released capacity is absorbed into existing work, bottlenecks move to whoever reviews and approves, and accountability for agents stays unclear.'],
+    b0:['Strategy','What the business needs to achieve.'],
+    b1:['Structure','How work, ownership and value streams are organized to deliver the strategy. An operating model decision.'],
+    b2:['Capacity released','The human time AI frees up, and where leaders decide to put it. Human capacity released by AI, not a pool of “AI capacity”.'],
+    b3:['Role changes','How roles and skills change around the new work. An operating model decision.'],
+    b3b:['Reskilling','The training, practice and support people need to perform the reshaped role. Nobody steps into a redesigned job without it, and it costs real time and budget.'],
+    b4:['Management','How the organization is now run: decision rights, accountability, measures and teams. An operating model decision that feeds the next cycle.']
+  };
+  const DEF='<b>Select a station</b> to see what happens there. Grey dots: capacity that is never decided. Blue dots: capacity that is decided and keeps cycling.';
+  let G=null, orient=null, ta=[], tb=[], tSpawn=0, msgI=0, tMsg=0, running=false, vis=false, last=0, sel=null;
+  const geo={
+    h:{vb:'0 0 1000 418',
+       la:{x:0,y:20,t:'Bolting AI on',s:'Tools first, roles after the fact'},
+       lb:{x:0,y:192,t:'Redesigning around AI',s:'Strategy and structure first'},
+       pa:'M60 84 H800',
+       pb:'M60 250 H900 Q980 250 980 310 V356 Q980 386 950 386 H10 Q-20 386 -20 356 V310 Q-20 250 60 250 Z',
+       A:[[60,84,'a0'],[300,84,'a1'],[540,84,'a2'],[800,84,'a3',1]],
+       B:[[60,250,'b0'],[228,250,'b1',0,1],[396,250,'b2'],[564,250,'b3',0,1],[732,250,'b3b',0,1],[900,250,'b4',0,1]],
+       lab:(x,y,leak)=>leak?{x,y:y-26,y2:y-44,sw:1}:{x,y:y+36,y2:y+53},
+       drip:{dx:0,dy:1}, msg:{x:800,y:160,a:'middle'}, ret:{x:480,y:410,a:'middle'}},
+    v:{vb:'0 0 360 990',
+       la:{x:0,y:22,t:'Bolting AI on',s:'Tools first, roles after'},
+       lb:{x:0,y:480,t:'Redesigning around AI',s:'Strategy and structure first'},
+       pa:'M30 76 V346',
+       pb:'M30 536 V896 Q30 916 50 916 H316 Q336 916 336 896 V536 Q336 516 316 516 H50 Q30 516 30 536 Z',
+       A:[[30,76,'a0'],[30,166,'a1'],[30,256,'a2'],[30,346,'a3',1]],
+       B:[[30,536,'b0'],[30,600,'b1',0,1],[30,664,'b2'],[30,728,'b3',0,1],[30,792,'b3b',0,1],[30,856,'b4',0,1]],
+       lab:(x,y)=>({x:x+26,y:y+5,y2:y+22,al:'start'}),
+       drip:{dx:0,dy:1}, msg:{x:56,y:420,a:'start'}, ret:{x:183,y:950,a:'middle'}}
+  };
+  function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+  function build(){
+    const o=fig.clientWidth<640?'v':'h'; if(o===orient) return; orient=o; G=geo[o];
+    svg.setAttribute('viewBox',G.vb); svg.innerHTML='';
+    for(const L of [G.la,G.lb]){const t=el('text',{x:L.x,y:L.y,class:'lane'},svg);t.textContent=L.t;const s=el('text',{x:L.x,y:L.y+18,class:'lane2'},svg);s.textContent=L.s;}
+    G.ePa=el('path',{d:G.pa,class:'trk'},svg);
+    G.ePb=el('path',{d:G.pb,class:'trk b'},svg);
+    const rl=el('text',{x:G.ret.x,y:G.ret.y,class:'retl','text-anchor':G.ret.a},svg); rl.textContent='Repeat as AI capability changes';
+    G.msgEl=el('text',{x:G.msg.x,y:G.msg.y,class:'leakmsg','text-anchor':G.msg.a},svg);
+    G.dripG=el('g',{},svg); G.tokG=el('g',{},svg);
+    G.st=[];
+    const mk=(arr)=>arr.forEach(([x,y,k,leak,om])=>{
+      const g=el('g',{class:'st'+(leak?' leak':'')+(om?' om':''),tabindex:0,role:'button','aria-label':TXT[k][0]+': '+TXT[k][1],'data-k':k},svg);
+      el('circle',{cx:x,cy:y,r:13},g);
+      const L=G.lab(x,y,leak), anc=L.al||'middle';
+      const t=el('text',{x:L.x,y:L.y,'text-anchor':anc},g); t.textContent=TXT[k][0];
+      const sub={a0:'What to achieve',a1:'Into existing teams',a2:'After the fact',a3:'Capacity drains away',b0:'What to achieve',b1:'How work flows',b2:'Where time goes',b3:'How roles change',b3b:'How people get ready',b4:'How it is run'}[k];
+      const s=el('text',{x:L.x,y:L.y2,class:'s','text-anchor':anc},g); s.textContent=sub;
+      if(L.sw){ t.setAttribute('y',L.y2); s.setAttribute('y',L.y); }
+      g.addEventListener('mouseenter',()=>show(k)); g.addEventListener('focus',()=>show(k)); g.addEventListener('click',()=>{sel=sel===k?null:k;show(sel);});
+      g.addEventListener('mouseleave',()=>show(sel)); g.addEventListener('blur',()=>show(sel));
+      G.st.push({g,x,y,k});
+    });
+    mk(G.A); mk(G.B);
+    G.La=G.ePa.getTotalLength(); G.Lb=G.ePb.getTotalLength();
+    ta=[]; tSpawn=99;
+    tb=[]; for(let i=0;i<6;i++) tb.push({s:i*G.Lb/6,e:el('circle',{r:7,class:'tok'},G.tokG)});
+    G.msgEl.textContent=LEAKS[0];
+    frame(0);
+  }
+  const LEAKS=['Capacity absorbed','Bottlenecks move downstream','Accountability blurs'];
+  function show(k){ $$('.st',svg).forEach(g=>g.classList.toggle('sel',g.dataset.k===sel)); det.innerHTML=k?'<b>'+TXT[k][0]+'.</b> '+TXT[k][1]:DEF; }
+  const SPD=62;
+  function frame(dt){
+    tSpawn+=dt; if(tSpawn>2.8){tSpawn=0;ta.push({s:0,e:el('circle',{r:7,class:'tok a'},G.tokG),drop:0});}
+    for(const t of ta){
+      if(t.s<G.La){t.s=Math.min(G.La,t.s+SPD*dt);const p=G.ePa.getPointAtLength(t.s);t.e.setAttribute('cx',p.x);t.e.setAttribute('cy',p.y);t.x=p.x;t.y=p.y;}
+      else{ t.drop+=dt; t.e.setAttribute('class','tok drip'); t.e.setAttribute('cy',t.y+t.drop*22); t.e.setAttribute('r',Math.max(0,7-t.drop*2.4)); t.e.style.opacity=Math.max(0,1-t.drop/2.4); if(t.drop>2.4){t.dead=true;t.e.remove();} }
+    }
+    ta=ta.filter(t=>!t.dead);
+    for(const t of tb){ t.s=(t.s+SPD*dt)%G.Lb; const p=G.ePb.getPointAtLength(t.s); t.e.setAttribute('cx',p.x); t.e.setAttribute('cy',p.y); t.x=p.x; t.y=p.y; }
+    const toks=ta.concat(tb);
+    for(const s of G.st){ const hit=toks.some(t=>t.x!=null&&Math.abs(t.x-s.x)<15&&Math.abs(t.y-s.y)<15); s.g.classList.toggle('hit',hit); }
+    tMsg+=dt; if(tMsg>3.2){tMsg=0;msgI=(msgI+1)%LEAKS.length;G.msgEl.style.opacity=0;setTimeout(()=>{G.msgEl.textContent=LEAKS[msgI];G.msgEl.style.opacity=1;},500);}
+  }
+  function loop(t){ if(!running) return; const dt=Math.min(.05,(t-last)/1000||0); last=t; frame(dt); requestAnimationFrame(loop); }
+  const P=pauser($('.pp',fig),()=>sync());
+  function sync(){ const want=vis&&!P.paused&&!RM; if(want&&!running){running=true;last=performance.now();requestAnimationFrame(loop);} else if(!want) running=false; }
+  build(); show(null);
+  if(RM){ for(let i=0;i<120;i++) frame(.1); }
+  let mw=0,mq=0; new ResizeObserver(es=>{const w=Math.round(es[0].contentRect.width); if(w===mw) return; mw=w; cancelAnimationFrame(mq); mq=requestAnimationFrame(build);}).observe(fig);
+  seen(fig,v=>{vis=v;sync();},.2);
+})();
+
+
+$$('.ugrid').forEach(g=>{const n=+g.dataset.n;let h='';for(let i=0;i<100;i++)h+='<i class="'+(i<n?'f':'')+'" style="--i:'+i+'"></i>';g.innerHTML=h;});
+cssLoop('fig-units',12000,{reset:el=>$$('[data-count]',el).forEach(b=>b.textContent='0%'),play:(el,inst)=>$$('[data-count]',el).forEach(b=>tween(b,+b.dataset.count,inst?0:2400,v=>Math.round(v)+'%'))});
+
+
+(function(){
+  const fig=$('#fig-cap'); if(!fig) return;
+  const PLAN={today:[['desk',30],['desk',20]],decide:[['desk',30],['reserve',4],['moved',7],['moved',5],['exit',4]],none:[['desk',30],['reserve',4],['absorb',16]]};
+  const rows={};
+  $$('.cb',fig).forEach(r=>{const bar=$('.cb-bar',r),cells=[],cls=[];for(let i=0;i<50;i++){const c=document.createElement('i');bar.appendChild(c);cells.push(c);}
+    PLAN[r.dataset.row].forEach(([k,n])=>{for(let j=0;j<n;j++)cls.push(k);}); rows[r.dataset.row]={r,cells,cls};});
+  const div=$('.cb-div',fig); let ts=[];
+  let LATER=null; const at=(ms,f)=>{ if(LATER) LATER(f,ms); else ts.push(setTimeout(f,ms)); };
+  function reset(){ts.forEach(clearTimeout);ts=[];for(const k in rows){const R=rows[k];R.r.classList.remove('show');R.cells.forEach(c=>{c.className='';c.style.setProperty('--d','0s');});}div.classList.remove('show');}
+  function fill(R,from,to,step,off,fn){for(let i=from;i<to;i++){const c=R.cells[i];c.style.setProperty('--d',(off+(i-from)*step)+'s');c.className=fn(i);}}
+  function final(){const T=rows.today,D=rows.decide,N=rows.none;
+    T.cells.forEach((c,i)=>c.className=i<30?'desk':'freed');D.cells.forEach((c,i)=>c.className=D.cls[i]);N.cells.forEach((c,i)=>c.className=N.cls[i]);
+    for(const k in rows) rows[k].r.classList.add('show'); div.classList.add('show');}
+  function play(inst){
+    if(inst){final();return;}
+    const T=rows.today,D=rows.decide,N=rows.none;
+    at(300,()=>fill(T,0,50,.025,0,()=>'desk'));
+    at(2500,()=>{fill(T,30,50,.06,0,()=>'freed');T.r.classList.add('show');});
+    at(4600,()=>div.classList.add('show'));
+    at(6000,()=>{fill(D,0,30,.012,0,()=>'desk');fill(D,30,50,.16,.5,i=>D.cls[i]);});
+    at(9600,()=>D.r.classList.add('show'));
+    at(10600,()=>{fill(N,0,30,.012,0,()=>'desk');fill(N,30,50,.16,.5,i=>N.cls[i]);});
+    at(14200,()=>N.r.classList.add('show'));
+  }
+  const api=loopFig(fig,{period:26000,reset,play,stop:()=>{ts.forEach(clearTimeout);ts=[];}}); if(api) LATER=api.later;
+  addEventListener('beforeprint',()=>{reset();final();});
+})();
+
+
+(function(){
+  const fig=$('#fig-meth'); if(!fig) return;
+  const ORDER=['enter','signal','decon','realloc','recon','wt','protect'];
+  const els=new Map($$('[data-k]',fig).map(b=>[b.dataset.k,b]));
+  const prog=document.createElement('div'); prog.className='mprog'; prog.setAttribute('aria-hidden','true'); $('.hm',fig).appendChild(prog);
+  ORDER.forEach(()=>prog.appendChild(document.createElement('i')));
+  let i=0,timer=null,vis=false;
+  function set(k){i=ORDER.indexOf(k);els.forEach((b,key)=>{b.classList.toggle('on',key===k);b.setAttribute('aria-pressed',key===k);});$$('i',prog).forEach((p,j)=>p.classList.toggle('on',j<=i));}
+  const P=pauser($('.pp',fig),()=>sync());
+  const DUR={enter:5500,protect:4500};
+  function sync(){clearTimeout(timer);timer=null;if(vis&&!P.paused&&!RM) timer=setTimeout(()=>{set(ORDER[(i+1)%ORDER.length]);sync();},DUR[ORDER[i]]||3200);}
+  els.forEach((b,k)=>b.addEventListener('click',()=>{set(k);P.set(true);sync();}));
+  set(RM?'recon':'signal');
+  seen(fig,v=>{vis=v;sync();},.3);
+})();
+
+
+(function(){
+  const fig=$('#fig-sort'); if(!fig) return;
+  const MOVES=[
+    ['retire','Retire','The work AI makes redundant. Usually activities rather than whole roles.'],
+    ['reshape','Reshape','Roles that stay but change. This covers most affected people.'],
+    ['reinforce','Reinforce','The capabilities that become more valuable as AI scales.'],
+    ['build','Build','Work that barely existed before.']
+  ];
+  const ROLES=[
+    ['analyst','Service desk analyst'],['ops','Operations engineer'],
+    ['problem','Problem manager'],['owner','Service owner']
+  ];
+  
+  const WORK=[
+    ['retire','analyst','First-line triage of rule-based queries'],
+    ['reshape','analyst','From resolving cases to owning the quality of agent output'],
+    ['reinforce','analyst','Judgment on exceptions, which are now harder'],
+    ['build','analyst','Curating the knowledge agents resolve from'],
+    ['build','analyst','Reviewing what agents did, and why'],
+    ['retire','ops','Running runbooks by hand'],
+    ['reshape','ops','From watching alerts to running the agents that remediate'],
+    ['reinforce','ops','Leading major incidents'],
+    ['build','ops','Running agents in production'],
+    ['retire','problem','Manual data extraction for trend analysis'],
+    ['reshape','problem','From analyzing trends after the fact to removing demand at source'],
+    ['reinforce','problem','Business context'],
+    ['build','problem','Reading agent signals for emerging problems'],
+    ['retire','owner','Repetitive reporting against service levels'],
+    ['reshape','owner','Becomes the named owner of each agent-supported service'],
+    ['reinforce','owner','Relationships'],
+    ['reinforce','owner','Regulatory context, and explaining decisions'],
+    ['build','owner','Owning agent cost and risk']
+  ];
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  let h='<div class="mx-h" aria-hidden="true"></div>'+
+    MOVES.map(([k,t,d])=>'<div class="mx-h '+k+'"><b>'+esc(t)+'</b><span>'+esc(d)+'</span></div>').join('');
+  ROLES.forEach(([rk,rt])=>{
+    h+='<div class="mx-r">'+esc(rt)+'</div>';
+    MOVES.forEach(([mk,mt])=>{
+      const items=WORK.filter(w=>w[1]===rk&&w[0]===mk);
+      h+='<div class="mx-c m-'+mk+'" data-move="'+esc(mt)+'">'+
+         items.map(w=>'<i>'+esc(w[2])+'</i>').join('')+'</div>';
+    });
+  });
+  $('.mx',fig).innerHTML=h;
+})();
+
+
+cssLoop('fig-itsm',22000);
+cssLoop('fig-dr',14000);
+cssLoop('fig-meas',13000);
+
+
+(function(){
+  const fig=$('#fig-cyc'); if(!fig) return;
+  const svg=$('svg',fig), cx=260, cy=220, r=160;
+  const N=[['Strategy','What to achieve',-90,0],['Structure','How work flows',-30,1],['Capacity released','Where time goes',30,0],['Role changes','How roles change',90,1],['Reskilling','How people get ready',150,1],['Management','How it is run',210,1]];
+  const nodes=N.map(([t,s,a,om],i)=>{
+    const x=cx+r*Math.cos(a*Math.PI/180), y=cy+r*Math.sin(a*Math.PI/180);
+    const g=document.createElementNS(NS,'g'); g.setAttribute('class','nd'+(om?' om':'')); g.style.setProperty('--i',i);
+    g.innerHTML='<rect x="'+(x-78)+'" y="'+(y-28)+'" width="156" height="56"/><text x="'+x+'" y="'+(y-4)+'">'+t+'</text><text class="s" x="'+x+'" y="'+(y+16)+'">'+s+'</text>';
+    svg.appendChild(g); return {g,a:a*Math.PI/180};
+  });
+  const run=$('.runner',svg); let on=false, ang=-Math.PI/2, last=0, t0=null;
+  function place(a){run.setAttribute('cx',cx+r*Math.cos(a));run.setAttribute('cy',cy+r*Math.sin(a));
+    nodes.forEach(n=>{let d=Math.abs(((a-n.a)%(2*Math.PI)+3*Math.PI)%(2*Math.PI)-Math.PI);n.g.classList.toggle('hit',d<.16);});}
+  function loop(t){ if(!on) return; const dt=Math.min(.05,(t-last)/1000||0); last=t; ang+=dt*(2*Math.PI/14); place(ang); requestAnimationFrame(loop); }
+  place(ang);
+  let CL=null, spin=false; const go=()=>{on=true;spin=true;last=performance.now();requestAnimationFrame(loop);};
+  const api2=loopFig(fig,{period:0,reset:()=>{fig.classList.remove('play');ang=-Math.PI/2;place(ang);clearTimeout(t0);on=false;spin=false;},
+    play:inst=>{fig.classList.add('play'); if(inst) return; if(CL) CL(go,3600); else t0=setTimeout(go,3600);},
+    stop:()=>{on=false;spin=false;clearTimeout(t0);},
+    pause:()=>{on=false;}, resume:()=>{ if(spin){on=true;last=performance.now();requestAnimationFrame(loop);} }});
+  if(api2) CL=api2.later;
+})();
+
+
+(function(){
+  const v=$('.venn'); if(!v) return;
+  loopFig(v,{period:11000,th:.4,reset:()=>v.classList.remove('play'),play:()=>v.classList.add('play')});
+})();
+
+
+addEventListener('beforeprint',()=>{
+  $$('#fig-units,#fig-itsm,#fig-dr,#fig-meas,#fig-cyc,.venn').forEach(e=>e.classList.add('play','noanim'));
+  $('#fig-cyc')&&$('#fig-cyc').classList.add('cycfig');
+  $$('[data-count]').forEach(b=>b.textContent=b.dataset.count+'%');
+});
+})();
+</script>
+</body>
+</html>
